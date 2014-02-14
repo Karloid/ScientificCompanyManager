@@ -41,7 +41,7 @@
     </div>
 </div>
 
-<div class="container" style="padding-top: 60px">
+<div class="container" id="container" style="padding-top: 60px">
     <jsp:doBody/>
 </div>
 

@@ -9,10 +9,10 @@ document.body.appendChild(renderer.view);
 
 requestAnimFrame(animate);
 
-// create a texture from an image path
-var texture = PIXI.Texture.fromImage("bunny.png");
+// create a soldierTexture from an image path
+var texture = PIXI.Texture.fromImage("soldier.png");
 
-// create a new Sprite using the texture
+// create a new Sprite using the soldierTexture
 var bunny = new PIXI.Sprite(texture);
 
 // center the sprites anchor point
@@ -34,4 +34,14 @@ function animate() {
 
     // render the stage
     renderer.render(stage);
+}
+
+function httpGet(theUrl)
+{
+    var xmlHttp = null;
+
+    xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false );
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
 }

@@ -1,5 +1,7 @@
 package com.krld.manager.web;
 
+import com.krld.manager.game.Game;
+import com.krld.manager.web.game.GameTilesServlet;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
 
@@ -8,7 +10,9 @@ import java.net.URL;
 /**
  * Created by Andrey on 2/11/14.
  */
-public class WebLauncher {
+public class WebServer {
+    private static Game game;
+
     public static void main(String[] args) {
         startServer();
     }
@@ -20,14 +24,7 @@ public class WebLauncher {
         WebAppContext webapp = new WebAppContext(warUrlString, "/");
         mappingPageServlets(webapp);
         mappingSoldierGame(webapp);
-
-
-     /*   ServletHandler handler = new ServletHandler();
-        handler.addServletWithMapping(HelloServlet.class, "/helloWorldServlet");
-        handler.addServletWithMapping(HelloBootstrapMinimal.class, "/HelloBootstrapMinimal"); // fail
-        handler.addServletWithMapping(HelloServletJsp.class, "/HelloServletHsp"); // fail */
         server.setHandler(webapp);
-        //  server.setHandler(handler);
 
         try {
             server.start();
@@ -38,7 +35,7 @@ public class WebLauncher {
     }
 
     private static void mappingSoldierGame(WebAppContext webapp) {
-
+        webapp.addServlet(GameTilesServlet.class, "/game/tiles");
     }
 
     private static void mappingPageServlets(WebAppContext webapp) {
@@ -52,5 +49,20 @@ public class WebLauncher {
 
     public static void start() {
         startServer();
+    }
+
+    public static Game getGame() {
+        if (game == null) {
+            initGame();
+        }
+        return game;
+    }
+
+    private static void initGame() {
+        game = new Game();
+    }
+
+    public static void setGame(Game game) {
+        WebServer.game = game;
     }
 }
