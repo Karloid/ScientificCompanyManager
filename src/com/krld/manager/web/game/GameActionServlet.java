@@ -1,4 +1,4 @@
-package com.krld.manager.web;
+package com.krld.manager.web.game;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,6 +14,6 @@ import java.io.InputStreamReader;
 public class GameActionServlet extends HttpServlet{
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println(new BufferedReader(new InputStreamReader(req.getInputStream())).readLine());
+        System.out.println(req.getSession().getAttribute("playerId")+ " : " +new BufferedReader(new InputStreamReader(req.getInputStream())).readLine());
     }
 }

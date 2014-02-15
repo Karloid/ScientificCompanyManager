@@ -6,6 +6,7 @@ package com.krld.manager.game;
 public class Game {
     public static final int WIDTH = 30;
     public static final int HEIGHT = 20;
+    private static int currentId = -1;
     private int[][] tiles;
 
     public Game() {
@@ -27,5 +28,14 @@ public class Game {
 
     public void setTiles(int[][] tiles) {
         this.tiles = tiles;
+    }
+
+    public Player createNewPlayer() {
+        return new Player();
+    }
+
+    public static int getNextId() {
+        currentId++;
+        return currentId;
     }
 }

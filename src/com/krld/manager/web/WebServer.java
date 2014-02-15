@@ -1,6 +1,7 @@
 package com.krld.manager.web;
 
 import com.krld.manager.game.Game;
+import com.krld.manager.web.game.GameActionServlet;
 import com.krld.manager.web.game.GameTilesServlet;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
