@@ -35,7 +35,7 @@ document.onkeydown = function onKeyDown(e) {
         keyArray[keyEnum.S_Key] = true;
     if (tmpkey == 'D')
         keyArray[keyEnum.D_Key] = true;
-  //  httpPost("/game/action", tmpkey + " is down");
+    //  httpPost("/game/action", tmpkey + " is down");
 }
 
 document.onkeyup = function onKeyUp(e) {
@@ -50,7 +50,7 @@ document.onkeyup = function onKeyUp(e) {
     if (tmpkey == 'D')
         keyArray[keyEnum.D_Key] = false;
 
-   //httpPost("/game/action", tmpkey + " is up");
+    //httpPost("/game/action", tmpkey + " is up");
 }
 
 
@@ -71,6 +71,8 @@ var soldierTexture = PIXI.Texture.fromImage("game/images/soldier.png");
 // create a new Sprite using the soldierTexture
 var soldier = new PIXI.Sprite(soldierTexture);
 
+var soldiers = {};
+/*
 // center the sprites anchor point
 soldier.anchor.x = 0.5;
 soldier.anchor.y = 0.5;
@@ -78,14 +80,20 @@ soldier.anchor.y = 0.5;
 // move the sprite t the center of the screen
 soldier.position.x = 200;
 soldier.position.y = 150;
-
+ */
 var tiles = new Array(10);
 for (var i = 0; i < 10; i++) {
     tiles[i] = new Array(10);
 }
+
+var playerId;
+var lastUpdateDate = new Date().getTime();
+var DELAY = 300;
+
+
 loadGroundTiles(container, tiles);
 
-container.addChild(soldier);
+//container.addChild(soldier);
 
 stage.addChild(container);
 
@@ -94,38 +102,75 @@ stage.onTouchMove = function (touchData) {
 }
 
 function arrayEquals(keyArray, keyArrayLastSended) {
-    for ( i = 0; i < 4; i++) {
-      if (keyArray[i] != keyArrayLastSended[i]){
-          return false;
-      }
+    for (i = 0; i < 4; i++) {
+        if (keyArray[i] != keyArrayLastSended[i]) {
+            return false;
+        }
     }
     return true;
 }
 function handleUserInput() {
 
     if (!arrayEquals(keyArray, keyArrayLastSended)) {
-        var request = "{ \"x\" : " + actionX +
-            ", \"y\" : " + actionY +
-            ", \"w\" : " + isKeyDown(keyEnum.W_Key) +
+        var request = "{ \"w\" : " + isKeyDown(keyEnum.W_Key) +
             ", \"a\" : " + isKeyDown(keyEnum.A_Key) +
             ", \"s\" : " + isKeyDown(keyEnum.S_Key) +
             ", \"d\" : " + isKeyDown(keyEnum.D_Key) +
 
             "}"
-        httpPost("/game/moveAction", request);
+        httpPost("/game/keyAction", request);
         keyArrayLastSended[0] = keyArray[0];
         keyArrayLastSended[1] = keyArray[1];
         keyArrayLastSended[2] = keyArray[2];
         keyArrayLastSended[3] = keyArray[3];
+    }
+    if (actionX != -1 && actionY != -1) {
+        var request = "{ \"x\" : " + actionX +
+            ", \"y\" : " + actionY +
+            "}"
+        httpPost("/game/mouseAction", request);
         actionX = -1;
         actionY = -1;
     }
 
 
+}
+function getPlayer(id) {
+    var soldier = soldiers[id];
+    if (!soldier)
+    {
+        soldier = {
+            id: id,
+            sprite: new PIXI.Sprite(soldierTexture)
+        };
+        soldier.sprite.anchor.x = 0.5;
+        soldier.sprite.anchor.y = 0.5;
+        soldiers[id] = soldier;
+
+        container.addChild(soldier.sprite);
+
+    }
+    return soldier;
+}
+function getPlayersPositions() {
+    var currentDate = new Date().getTime();
+    if (currentDate - lastUpdateDate < DELAY) {
+        return;
+    }
+    lastUpdateDate = currentDate;
+    var json = httpGet("/game/players");
+    obj = JSON.parse(json);
+    for (i = 0; i < obj.players.length; i++) {
+        player = getPlayer(obj.players[i].id);
+        player.sprite.position.x = obj.players[i].x;
+        player.sprite.position.y = obj.players[i].y;
+    }
 
 }
 function animate() {
     handleUserInput();
+
+    getPlayersPositions();
 
     requestAnimFrame(animate);
 
@@ -140,6 +185,7 @@ function loadGroundTiles(container, tiles) {
     obj = JSON.parse(json);
     WIDTH_WORLD = obj.width;
     HEIGHT_WORLD = obj.height;
+    playerId = obj.playerId;
     var tile;
     for (x = 0; x < WIDTH_WORLD; x++) {
         for (y = 0; y < HEIGHT_WORLD; y++) {

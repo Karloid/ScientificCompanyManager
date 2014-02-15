@@ -1,8 +1,14 @@
 package com.krld.manager.web;
 
 import com.krld.manager.game.Game;
-import com.krld.manager.web.game.GameActionServlet;
+import com.krld.manager.web.game.GamePlayersServlet;
+import com.krld.manager.web.game.GameMouseActionServlet;
+import com.krld.manager.web.game.GameKeyActionServlet;
 import com.krld.manager.web.game.GameTilesServlet;
+import com.krld.manager.web.general.MyMockupServlet;
+import com.krld.manager.web.general.PixiTestServlet;
+import com.krld.manager.web.general.SoldierGameServlet;
+import com.krld.manager.web.general.TestBootStrap;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
 
@@ -37,7 +43,9 @@ public class WebServer {
 
     private static void mappingSoldierGame(WebAppContext webapp) {
         webapp.addServlet(GameTilesServlet.class, "/game/tiles");
-        webapp.addServlet(GameActionServlet.class, "/game/action");
+        webapp.addServlet(GameKeyActionServlet.class, "/game/keyAction");
+        webapp.addServlet(GameMouseActionServlet.class, "/game/mouseAction");
+        webapp.addServlet(GamePlayersServlet.class, "/game/players");
     }
 
     private static void mappingPageServlets(WebAppContext webapp) {

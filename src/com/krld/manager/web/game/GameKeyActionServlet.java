@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
 /**
  * Created by Andrey on 2/14/14.
  */
-public class GameActionServlet extends HttpServlet{
+public class GameKeyActionServlet extends HttpServlet{
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println(req.getSession().getAttribute("playerId")+ " : " +new BufferedReader(new InputStreamReader(req.getInputStream())).readLine());

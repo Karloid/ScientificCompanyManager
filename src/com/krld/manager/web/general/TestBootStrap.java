@@ -1,4 +1,4 @@
-package com.krld.manager.web;
+package com.krld.manager.web.general;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
