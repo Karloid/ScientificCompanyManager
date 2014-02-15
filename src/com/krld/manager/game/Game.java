@@ -88,4 +88,14 @@ public class Game {
     public void setPlayers(List<Player> players) {
         this.players = players;
     }
+
+    public Player getPlayerById(int playerId) {
+        for (Player player : players) {
+            if (player.getId() == playerId) {
+                return player;
+            }
+        }
+        return null;
+
+    }
 }
