@@ -21,7 +21,9 @@ public class GameTilesServlet extends HttpServlet {
         int[][] tiles = game.getTiles();
         Gson gson = new Gson();
         PrintWriter writer = resp.getWriter();
-        writer.println(gson.toJson(tiles));
+        writer.println(" {  \"width\" : " + game.WIDTH +
+                ",\"height\" : " + game.HEIGHT +
+                ",\"tiles\" : "+gson.toJson(tiles) + '}');
 
     }
 }

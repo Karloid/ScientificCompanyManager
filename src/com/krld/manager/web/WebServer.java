@@ -36,6 +36,7 @@ public class WebServer {
 
     private static void mappingSoldierGame(WebAppContext webapp) {
         webapp.addServlet(GameTilesServlet.class, "/game/tiles");
+        webapp.addServlet(GameActionServlet.class, "/game/action");
     }
 
     private static void mappingPageServlets(WebAppContext webapp) {

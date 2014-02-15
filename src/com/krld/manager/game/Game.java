@@ -4,8 +4,8 @@ package com.krld.manager.game;
  * Created by Andrey on 2/14/14.
  */
 public class Game {
-    private static final int WIDTH = 10;
-    private static final int HEIGHT = 10;
+    public static final int WIDTH = 30;
+    public static final int HEIGHT = 20;
     private int[][] tiles;
 
     public Game() {

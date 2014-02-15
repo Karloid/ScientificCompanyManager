@@ -2,17 +2,71 @@
 var stage = new PIXI.Stage(0xAABBCC);
 
 // create a renderer instance
-var renderer = PIXI.autoDetectRenderer(800, 600);
+var CELL_SIZE = 32;
+var WIDTH_WORLD = 30;
+var HEIGHT_WORLD = 20;
+
+
+var renderer = PIXI.autoDetectRenderer(CELL_SIZE * WIDTH_WORLD, CELL_SIZE * HEIGHT_WORLD);
+
+var actionX = -1;
+var actionY = -1;
+renderer.view.onmousedown = function(e){
+    actionX = (e.x - renderer.view.offsetLeft);
+    actionY = (e.y - renderer.view.offsetTop);
+};
+
+var keyEnum = { W_Key:0, A_Key:1, S_Key:2, D_Key:3 };
+var keyArray = new Array(4);
+keyArray[0] = false;
+keyArray[1] = false;
+keyArray[2] = false;
+keyArray[3] = false;
+
+document.onkeydown = function onKeyDown(e)
+ {
+     tmpkey = String.fromCharCode(e.keyCode);
+ if( tmpkey == 'W' )
+ keyArray[keyEnum.W_Key] = true;
+ if( tmpkey == 'A' )
+ keyArray[keyEnum.A_Key] = true;
+ if( tmpkey == 'S' )
+ keyArray[keyEnum.S_Key] = true;
+ if(tmpkey == 'D' )
+ keyArray[keyEnum.D_Key] = true;
+ }
+
+document.onkeydown = function onKeyUp(e)
+{
+    tmpkey = String.fromCharCode(e.keyCode);
+
+    if( tmpkey == 'W' )
+        keyArray[keyEnum.W_Key] = false;
+    if( tmpkey == 'A' )
+        keyArray[keyEnum.A_Key] = false;
+    if( tmpkey == 'S' )
+        keyArray[keyEnum.S_Key] = false;
+    if(tmpkey == 'D' )
+        keyArray[keyEnum.D_Key] = false;
+}
+
+
+
+
 
 // add the renderer view element to the DOM
-document.body.appendChild(renderer.view);
+document.getElementById("container").appendChild(renderer.view);
+
+//renderer.view.addEventListener("mousedown", function() {});
+
 
 requestAnimFrame(animate);
 
+var container = new PIXI.DisplayObjectContainer();
+
 // create a soldierTexture from an image path
 var soldierTexture = PIXI.Texture.fromImage("game/images/soldier.png");
-var grass1Texture = PIXI.Texture.fromImage("game/images/grass1.png");
-var grass2Texture = PIXI.Texture.fromImage("game/images/grass2.png");
+
 
 // create a new Sprite using the soldierTexture
 var soldier = new PIXI.Sprite(soldierTexture);
@@ -29,29 +83,60 @@ var tiles = new Array(10);
 for (var i = 0; i < 10; i++) {
     tiles[i] = new Array(10);
 }
-loadGroundTiles(stage, tiles);
+loadGroundTiles(container, tiles);
 
-stage.addChild(soldier);
+container.addChild(soldier);
 
+stage.addChild(container);
+
+stage.onTouchMove = function(touchData){
+    alert("TOUCH MOVE");
+}
+
+function handleUserInput() {
+    var request = "{ \"x\" : " +  actionX +
+        ", \"y\" : " +  actionY +
+        ", \"w\" : " +  isKeyDown(keyEnum.W_Key) +
+        ", \"a\" : " +  isKeyDown(keyEnum.A_Key) +
+        ", \"s\" : " +  isKeyDown(keyEnum.S_Key) +
+        ", \"d\" : " +  isKeyDown(keyEnum.D_Key) +
+
+        "}"
+    httpPost("/game/action", request)
+    var actionX = -1;
+    var actionY = -1;
+}
 function animate() {
+    handleUserInput();
 
     requestAnimFrame( animate );
 
-    // just for fun, let's rotate mr rabbit a little
-    //soldier.rotation += 0.1;
-
-    // render the stage
     renderer.render(stage);
 }
 
-function loadGroundTiles(stage, tiles) {
+function loadGroundTiles(container, tiles) {
+    var grass1Texture = PIXI.Texture.fromImage("game/images/grass1.png");
+    var grass2Texture = PIXI.Texture.fromImage("game/images/grass2.png");
     var json = httpGet("/game/tiles");
-    alert(json);
+  //  alert(json);
     obj = JSON.parse(json);
-    alert(obj);
-  //  for (var x in obj) {
-  //      for (var y in  )
-  //  }
+    WIDTH_WORLD = obj.width;
+    HEIGHT_WORLD = obj.height;
+    var tile;
+    for (x = 0; x < WIDTH_WORLD; x++) {
+        for (y = 0; y < HEIGHT_WORLD; y++) {
+           if (obj.tiles[x][y] == 1) {
+               tile = new PIXI.Sprite(grass1Texture);
+           }   else if (obj.tiles[x][y] == 2) {
+               tile = new PIXI.Sprite(grass2Texture);
+           }
+           tile.position.x = x * CELL_SIZE;
+           tile.position.y = y * CELL_SIZE;
+           container.addChild(tile);
+        }
+    }
+ //   alert(obj.tiles[1][1]);
+
 }
 
 function httpGet(theUrl)
@@ -62,4 +147,20 @@ function httpGet(theUrl)
     xmlHttp.open( "GET", theUrl, false );
     xmlHttp.send( null );
     return xmlHttp.responseText;
+}
+
+function httpPost(theUrl, request)
+{
+    var xmlHttp = null;
+
+    xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "POST", theUrl, false );
+    xmlHttp.send( request );
+    return xmlHttp.responseText;
+}
+
+
+function isKeyDown(key)
+{
+    return keyArray[key];
 }
