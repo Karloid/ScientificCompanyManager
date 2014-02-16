@@ -87,4 +87,6 @@ public abstract class ActiveUnit extends Unit {
     public boolean isMoveDown() {
         return moveDown;
     }
+
+    public abstract void action(int x, int y);
 }

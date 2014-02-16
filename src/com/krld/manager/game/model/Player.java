@@ -12,4 +12,13 @@ public class Player extends ActiveUnit {
         setSpeed(10);
 
     }
+
+    @Override
+    public void action(int x, int y) {
+        shootTo(x, y);
+    }
+
+    private void shootTo(int x, int y) {
+        getContext().getBullets().add(new Bullet(this,getContext(), x,y));
+    }
 }

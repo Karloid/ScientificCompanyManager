@@ -1,5 +1,6 @@
 package com.krld.manager.game;
 
+import com.krld.manager.game.model.AbstractBullet;
 import com.krld.manager.game.model.ActiveUnit;
 import com.krld.manager.game.model.Player;
 import com.krld.manager.game.model.TileTypes;
@@ -17,10 +18,12 @@ public class Game {
     private  int currentId = -1;
     private int[][] tiles;
     private List<Player> players;
+    private List<AbstractBullet> bullets;
 
     public Game() {
         initTiles();
         players = new ArrayList<Player>();
+        bullets = new ArrayList<AbstractBullet>();
 
         new Thread(new Runnable() {
             @Override
@@ -101,5 +104,13 @@ public class Game {
         }
         return null;
 
+    }
+
+    public List<AbstractBullet> getBullets() {
+        return bullets;
+    }
+
+    public void setBullets(List<AbstractBullet> bullets) {
+        this.bullets = bullets;
     }
 }
