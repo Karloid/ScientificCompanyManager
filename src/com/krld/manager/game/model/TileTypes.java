@@ -1,4 +1,4 @@
-package com.krld.manager.game;
+package com.krld.manager.game.model;
 
 /**
  * Created by Andrey on 2/14/14.

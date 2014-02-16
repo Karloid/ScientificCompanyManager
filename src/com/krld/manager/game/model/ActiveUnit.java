@@ -1,4 +1,6 @@
-package com.krld.manager.game;
+package com.krld.manager.game.model;
+
+import com.krld.manager.game.Game;
 
 /**
  * Created by Andrey on 2/15/14.
@@ -10,8 +12,8 @@ public abstract class ActiveUnit extends Unit {
     private boolean moveLeft;
     private boolean moveDown;
 
-    public ActiveUnit(int x, int y) {
-        super(x, y);
+    public ActiveUnit(int x, int y, Game game) {
+        super(x, y, game);
     }
 
     public void update() {

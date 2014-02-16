@@ -1,5 +1,9 @@
 package com.krld.manager.game;
 
+import com.krld.manager.game.model.ActiveUnit;
+import com.krld.manager.game.model.Player;
+import com.krld.manager.game.model.TileTypes;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +14,7 @@ public class Game {
     public static final int WIDTH = 30;
     public static final int HEIGHT = 20;
     private static final int CELL_SIZE = 32;
-    private static int currentId = -1;
+    private  int currentId = -1;
     private int[][] tiles;
     private List<Player> players;
 
@@ -71,12 +75,12 @@ public class Game {
 
     public Player createNewPlayer() {
         Player player = new Player((int) (Math.random() * WIDTH * CELL_SIZE),
-                (int) (Math.random() * HEIGHT * CELL_SIZE));
+                (int) (Math.random() * HEIGHT * CELL_SIZE), this);
         players.add(player);
         return player;
     }
 
-    public static int getNextId() {
+    public int getNextId() {
         currentId++;
         return currentId;
     }
