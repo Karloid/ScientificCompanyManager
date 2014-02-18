@@ -7,10 +7,26 @@ import com.krld.manager.game.Game;
  */
 public class Player extends ActiveUnit {
 
-    public Player(int x, int y, Game game) {
-        super(x,y, game);
-        setSpeed(10);
+    private int spriteType;
 
+    public Player(int x, int y, Game game) {
+        super(x, y, game);
+        setSpeed(10 * game.getSpeedRatio());
+        randomizeSpriteType();
+
+    }
+
+    private void randomizeSpriteType() {
+        double random = Math.random();
+        if (random > 0.75f) {
+            spriteType = PlayerSpriteType.SOLDIER1;
+        } else if (random > 0.5f) {
+            spriteType = PlayerSpriteType.SOLDIER2;
+        } else if (random > 0.25f) {
+            spriteType = PlayerSpriteType.SOLDIER3;
+        } else if (random > 0.0f) {
+            spriteType = PlayerSpriteType.SOLDIER4;
+        }
     }
 
     @Override
@@ -19,6 +35,14 @@ public class Player extends ActiveUnit {
     }
 
     private void shootTo(int x, int y) {
-        getContext().getBullets().add(new Bullet(this,getContext(), x,y));
+        getContext().getBullets().add(new Bullet(this, getContext(), x, y));
+    }
+
+    public int getSpriteType() {
+        return spriteType;
+    }
+
+    public void setSpriteType(int spriteType) {
+        this.spriteType = spriteType;
     }
 }

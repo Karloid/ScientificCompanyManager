@@ -64,22 +64,25 @@ requestAnimFrame(animate);
 
 var container = new PIXI.DisplayObjectContainer();
 
-// create a soldierTexture from an image path
-var soldierTexture = PIXI.Texture.fromImage("game/images/soldier.png");
+// create a soldier1Texture from an image path
+var soldier1Texture = PIXI.Texture.fromImage("game/images/soldier1.png");
+var soldier2Texture = PIXI.Texture.fromImage("game/images/soldier2.png");
+var soldier3Texture = PIXI.Texture.fromImage("game/images/soldier3.png");
+var soldier4Texture = PIXI.Texture.fromImage("game/images/soldier4.png");
 
 
-// create a new Sprite using the soldierTexture
-var soldier = new PIXI.Sprite(soldierTexture);
+// create a new Sprite using the soldier1Texture
+//var soldier = new PIXI.Sprite(soldier1Texture);
 
 var soldiers = {};
 /*
-// center the sprites anchor point
-soldier.anchor.x = 0.5;
-soldier.anchor.y = 0.5;
+ // center the sprites anchor point
+ soldier.anchor.x = 0.5;
+ soldier.anchor.y = 0.5;
 
-// move the sprite t the center of the screen
-soldier.position.x = 200;
-soldier.position.y = 150;
+ // move the sprite t the center of the screen
+ soldier.position.x = 200;
+ soldier.position.y = 150;
  */
 var tiles = new Array(10);
 for (var i = 0; i < 10; i++) {
@@ -135,13 +138,25 @@ function handleUserInput() {
 
 
 }
-function getPlayer(id) {
+function getTexture(spriteType) {
+    if (spriteType == 1) {
+        return soldier1Texture;
+    } else if (spriteType == 2) {
+        return soldier2Texture;
+    } else if (spriteType == 3) {
+        return soldier3Texture;
+    } else if (spriteType == 4) {
+        return soldier4Texture;
+    }
+
+}
+function getPlayer(id, spriteType) {
     var soldier = soldiers[id];
-    if (!soldier)
-    {
+    if (!soldier) {
         soldier = {
             id: id,
-            sprite: new PIXI.Sprite(soldierTexture)
+            spriteType: spriteType,
+            sprite: new PIXI.Sprite(getTexture(spriteType))
         };
         soldier.sprite.anchor.x = 0.5;
         soldier.sprite.anchor.y = 0.5;
@@ -161,7 +176,7 @@ function getPlayersPositions() {
     var json = httpGet("/game/players");
     obj = JSON.parse(json);
     for (i = 0; i < obj.players.length; i++) {
-        player = getPlayer(obj.players[i].id);
+        player = getPlayer(obj.players[i].id, obj.players[i].spriteType);
         player.sprite.position.x = obj.players[i].x;
         player.sprite.position.y = obj.players[i].y;
     }
@@ -180,12 +195,15 @@ function animate() {
 function loadGroundTiles(container, tiles) {
     var grass1Texture = PIXI.Texture.fromImage("game/images/grass1.png");
     var grass2Texture = PIXI.Texture.fromImage("game/images/grass2.png");
+    var dirt1Texture = PIXI.Texture.fromImage("game/images/dirt1.png");
+    var dirt2Texture = PIXI.Texture.fromImage("game/images/dirt2.png");
     var json = httpGet("/game/tiles");
     //  alert(json);
     obj = JSON.parse(json);
     WIDTH_WORLD = obj.width;
     HEIGHT_WORLD = obj.height;
     playerId = obj.playerId;
+    DELAY = obj.delay;
     var tile;
     for (x = 0; x < WIDTH_WORLD; x++) {
         for (y = 0; y < HEIGHT_WORLD; y++) {
@@ -193,6 +211,10 @@ function loadGroundTiles(container, tiles) {
                 tile = new PIXI.Sprite(grass1Texture);
             } else if (obj.tiles[x][y] == 2) {
                 tile = new PIXI.Sprite(grass2Texture);
+            } else if (obj.tiles[x][y] == 3) {
+                tile = new PIXI.Sprite(dirt1Texture);
+            } else if (obj.tiles[x][y] == 4) {
+                tile = new PIXI.Sprite(dirt2Texture);
             }
             tile.position.x = x * CELL_SIZE;
             tile.position.y = y * CELL_SIZE;

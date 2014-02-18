@@ -32,6 +32,7 @@ public class GamePlayersServlet extends HttpServlet {
             map.put("id", player.getId());
             map.put("x", player.getPosition().getX());
             map.put("y", player.getPosition().getY());
+            map.put("spriteType", player.getSpriteType());
             res.add(map);
         }
         writer.println(" {  \"players\" : " + gson.toJson(res) + '}');

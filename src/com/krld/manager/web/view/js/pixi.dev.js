@@ -1488,7 +1488,7 @@ PIXI.DisplayObjectContainer.prototype._renderCanvas = function(renderSession)
  * @class Sprite
  * @extends DisplayObjectContainer
  * @constructor
- * @param texture {Texture} The soldierTexture for this sprite
+ * @param texture {Texture} The soldier1Texture for this sprite
  * 
  * A sprite can be created directly from an image like this : 
  * var sprite = nex PIXI.Sprite.FromImage('assets/image.png');
@@ -1500,8 +1500,8 @@ PIXI.Sprite = function(texture)
     PIXI.DisplayObjectContainer.call( this );
 
     /**
-     * The anchor sets the origin point of the soldierTexture.
-     * The default is 0,0 this means the soldierTexture's origin is the top left
+     * The anchor sets the origin point of the soldier1Texture.
+     * The default is 0,0 this means the soldier1Texture's origin is the top left
      * Setting than anchor to 0.5,0.5 means the textures origin is centred
      * Setting the anchor to 1,1 would mean the textures origin points will be the bottom right corner
      *
@@ -1511,7 +1511,7 @@ PIXI.Sprite = function(texture)
     this.anchor = new PIXI.Point();
 
     /**
-     * The soldierTexture that the sprite is using
+     * The soldier1Texture that the sprite is using
      *
      * @property texture
      * @type Texture
@@ -1519,7 +1519,7 @@ PIXI.Sprite = function(texture)
     this.texture = texture;
 
     /**
-     * The width of the sprite (this is initially set by the soldierTexture)
+     * The width of the sprite (this is initially set by the soldier1Texture)
      *
      * @property _width
      * @type Number
@@ -1528,7 +1528,7 @@ PIXI.Sprite = function(texture)
     this._width = 0;
 
     /**
-     * The height of the sprite (this is initially set by the soldierTexture)
+     * The height of the sprite (this is initially set by the soldier1Texture)
      *
      * @property _height
      * @type Number
@@ -1580,10 +1580,10 @@ PIXI.Sprite.prototype.constructor = PIXI.Sprite;
  */
 Object.defineProperty(PIXI.Sprite.prototype, 'width', {
     get: function() {
-        return this.scale.x * this.soldierTexture.frame.width;
+        return this.scale.x * this.soldier1Texture.frame.width;
     },
     set: function(value) {
-        this.scale.x = value / this.soldierTexture.frame.width;
+        this.scale.x = value / this.soldier1Texture.frame.width;
         this._width = value;
     }
 });
@@ -1596,23 +1596,23 @@ Object.defineProperty(PIXI.Sprite.prototype, 'width', {
  */
 Object.defineProperty(PIXI.Sprite.prototype, 'height', {
     get: function() {
-        return  this.scale.y * this.soldierTexture.frame.height;
+        return  this.scale.y * this.soldier1Texture.frame.height;
     },
     set: function(value) {
-        this.scale.y = value / this.soldierTexture.frame.height;
+        this.scale.y = value / this.soldier1Texture.frame.height;
         this._height = value;
     }
 });
 
 /**
- * Sets the soldierTexture of the sprite
+ * Sets the soldier1Texture of the sprite
  *
  * @method setTexture
- * @param texture {Texture} The PIXI soldierTexture that is displayed by the sprite
+ * @param texture {Texture} The PIXI soldier1Texture that is displayed by the sprite
  */
 PIXI.Sprite.prototype.setTexture = function(texture)
 {
-    // stop current soldierTexture;
+    // stop current soldier1Texture;
     if(this.texture.baseTexture !== texture.baseTexture)
     {
         this.textureChange = true;
@@ -1628,7 +1628,7 @@ PIXI.Sprite.prototype.setTexture = function(texture)
 };
 
 /**
- * When the soldierTexture is updated, this event will fire to update the scale and frame
+ * When the soldier1Texture is updated, this event will fire to update the scale and frame
  *
  * @method onTextureUpdate
  * @param event
@@ -1836,7 +1836,7 @@ PIXI.Sprite.prototype._renderCanvas = function(renderSession)
         }
 
 
-        //if smoothingEnabled is supported and we need to change the smoothing property for this soldierTexture
+        //if smoothingEnabled is supported and we need to change the smoothing property for this soldier1Texture
         if(renderSession.smoothProperty && renderSession.scaleMode !== this.texture.baseTexture.scaleMode) {
             renderSession.scaleMode = this.texture.baseTexture.scaleMode;
             context[renderSession.smoothProperty] = (renderSession.scaleMode === PIXI.scaleModes.LINEAR);
@@ -1921,30 +1921,30 @@ PIXI.Sprite.prototype._renderCanvas = function(renderSession)
 
 /**
  *
- * Helper function that creates a sprite that will contain a soldierTexture from the TextureCache based on the frameId
+ * Helper function that creates a sprite that will contain a soldier1Texture from the TextureCache based on the frameId
  * The frame ids are created when a Texture packer file has been loaded
  *
  * @method fromFrame
  * @static
- * @param frameId {String} The frame Id of the soldierTexture in the cache
- * @return {Sprite} A new Sprite using a soldierTexture from the soldierTexture cache matching the frameId
+ * @param frameId {String} The frame Id of the soldier1Texture in the cache
+ * @return {Sprite} A new Sprite using a soldier1Texture from the soldier1Texture cache matching the frameId
  */
 PIXI.Sprite.fromFrame = function(frameId)
 {
     var texture = PIXI.TextureCache[frameId];
-    if(!texture) throw new Error('The frameId "' + frameId + '" does not exist in the soldierTexture cache' + this);
+    if(!texture) throw new Error('The frameId "' + frameId + '" does not exist in the oldierTexture cache' + this);
     return new PIXI.Sprite(texture);
 };
 
 /**
  *
- * Helper function that creates a sprite that will contain a soldierTexture based on an image url
- * If the image is not in the soldierTexture cache it will be loaded
+ * Helper function that creates a sprite that will contain a soldier1Texture based on an image url
+ * If the image is not in the soldier1Texture cache it will be loaded
  *
  * @method fromImage
  * @static
- * @param imageId {String} The image url of the soldierTexture
- * @return {Sprite} A new Sprite using a soldierTexture from the soldierTexture cache matching the image id
+ * @param imageId {String} The image url of the soldier1Texture
+ * @return {Sprite} A new Sprite using a soldier1Texture from the soldier1Texture cache matching the image id
  */
 PIXI.Sprite.fromImage = function(imageId)
 {
@@ -2471,7 +2471,7 @@ PIXI.Text.prototype.updateText = function()
 };
 
 /**
- * Updates soldierTexture size based on canvas size
+ * Updates soldier1Texture size based on canvas size
  *
  * @method updateTexture
  * @private
@@ -4345,7 +4345,7 @@ PIXI.PixiShader = function(gl)
 
 
     /**
-    * @property {number} textureCount - A local soldierTexture counter for multi-soldierTexture shaders.
+    * @property {number} textureCount - A local soldier1Texture counter for multi-soldier1Texture shaders.
     */
     this.textureCount = 0;
 
@@ -4481,7 +4481,7 @@ PIXI.PixiShader.prototype.initUniforms = function()
 };
 
 /**
-* Initialises a Sampler2D uniform (which may only be available later on after initUniforms once the soldierTexture has loaded)
+* Initialises a Sampler2D uniform (which may only be available later on after initUniforms once the soldier1Texture has loaded)
 *
 * @method initSampler2D
 */
@@ -4497,7 +4497,7 @@ PIXI.PixiShader.prototype.initSampler2D = function(uniform)
     gl.activeTexture(gl['TEXTURE' + this.textureCount]);
     gl.bindTexture(gl.TEXTURE_2D, uniform.value.baseTexture._glTexture);
 
-    //  Extended soldierTexture data
+    //  Extended soldier1Texture data
     if (uniform.textureData)
     {
         var data = uniform.textureData;
@@ -4729,7 +4729,7 @@ PIXI.PixiFastShader = function(gl)
 
 
     /**
-    * @property {number} textureCount - A local soldierTexture counter for multi-soldierTexture shaders.
+    * @property {number} textureCount - A local soldier1Texture counter for multi-soldier1Texture shaders.
     */
     this.textureCount = 0;
 
@@ -5821,7 +5821,7 @@ PIXI.WebGLRenderer.updateTextures = function()
 {
     var i = 0;
 
-    //TODO break this out into a soldierTexture manager...
+    //TODO break this out into a soldier1Texture manager...
     //for (i = 0; i < PIXI.texturesToUpdate.length; i++)
     //    PIXI.WebGLRenderer.updateTexture(PIXI.texturesToUpdate[i]);
 
@@ -5838,15 +5838,15 @@ PIXI.WebGLRenderer.updateTextures = function()
 };
 
 /**
- * Destroys a loaded webgl soldierTexture
+ * Destroys a loaded webgl soldier1Texture
  *
  * @method destroyTexture
- * @param texture {Texture} The soldierTexture to update
+ * @param texture {Texture} The soldier1Texture to update
  * @private
  */
 PIXI.WebGLRenderer.destroyTexture = function(texture)
 {
-    //TODO break this out into a soldierTexture manager...
+    //TODO break this out into a soldier1Texture manager...
 
     for (var i = texture._glTextures.length - 1; i >= 0; i--)
     {
@@ -5865,15 +5865,15 @@ PIXI.WebGLRenderer.destroyTexture = function(texture)
 /**
  *
  * @method updateTextureFrame
- * @param texture {Texture} The soldierTexture to update the frame from
+ * @param texture {Texture} The soldier1Texture to update the frame from
  * @private
  */
 PIXI.WebGLRenderer.updateTextureFrame = function(texture)
 {
     texture.updateFrame = false;
 
-    // now set the uvs. Figured that the uv data sits with a soldierTexture rather than a sprite.
-    // so uv data is stored on the soldierTexture itself
+    // now set the uvs. Figured that the uv data sits with a soldier1Texture rather than a sprite.
+    // so uv data is stored on the soldier1Texture itself
     texture._updateWebGLuvs();
 };
 
@@ -5899,10 +5899,10 @@ PIXI.WebGLRenderer.prototype.resize = function(width, height)
 };
 
 /**
- * Creates a WebGL soldierTexture
+ * Creates a WebGL soldier1Texture
  *
  * @method createWebGLTexture
- * @param texture {Texture} the soldierTexture to render
+ * @param texture {Texture} the soldier1Texture to render
  * @param gl {webglContext} the WebGL context
  * @static
  */
@@ -5941,10 +5941,10 @@ PIXI.createWebGLTexture = function(texture, gl)
 };
 
 /**
- * Updates a WebGL soldierTexture
+ * Updates a WebGL soldier1Texture
  *
  * @method updateWebGLTexture
- * @param texture {Texture} the soldierTexture to update
+ * @param texture {Texture} the soldier1Texture to update
  * @param gl {webglContext} the WebGL context
  * @private
  */
@@ -6483,7 +6483,7 @@ PIXI.WebGLSpriteBatch.prototype.end = function()
 */
 PIXI.WebGLSpriteBatch.prototype.render = function(sprite)
 {
-    // check soldierTexture..
+    // check soldier1Texture..
     if(sprite.texture.baseTexture !== this.currentBaseTexture || this.currentBatchSize >= this.size)
     {
         this.flush();
@@ -6497,7 +6497,7 @@ PIXI.WebGLSpriteBatch.prototype.render = function(sprite)
         this.setBlendMode(sprite.blendMode);
     }
 
-    // get the uvs for the soldierTexture
+    // get the uvs for the soldier1Texture
     var uvs = sprite._uvs || sprite.texture._uvs;
     // if the uvs have not updated then no point rendering just yet!
     if(!uvs)return;
@@ -6617,7 +6617,7 @@ PIXI.WebGLSpriteBatch.prototype.renderTilingSprite = function(tilingSprite)
     }
 
      // set the textures uvs temporarily
-    // TODO create a separate soldierTexture so that we can tile part of a soldierTexture
+    // TODO create a separate soldier1Texture so that we can tile part of a soldier1Texture
 
     if(!tilingSprite._uvs)tilingSprite._uvs = new Float32Array(8);
 
@@ -6655,8 +6655,8 @@ PIXI.WebGLSpriteBatch.prototype.renderTilingSprite = function(tilingSprite)
     var height = tilingSprite.height;
 
     // TODO trim??
-    var aX = tilingSprite.anchor.x; // - tilingSprite.soldierTexture.trim.x
-    var aY = tilingSprite.anchor.y; //- tilingSprite.soldierTexture.trim.y
+    var aX = tilingSprite.anchor.x; // - tilingSprite.soldier1Texture.trim.x
+    var aY = tilingSprite.anchor.y; //- tilingSprite.soldier1Texture.trim.y
     var w0 = width * (1-aX);
     var w1 = width * -aX;
 
@@ -6732,7 +6732,7 @@ PIXI.WebGLSpriteBatch.prototype.flush = function()
 
     var gl = this.gl;
     
-    // bind the current soldierTexture
+    // bind the current soldier1Texture
     gl.bindTexture(gl.TEXTURE_2D, this.currentBaseTexture._glTextures[gl.id] || PIXI.createWebGLTexture(this.currentBaseTexture, gl));
 
     // upload the verts to the buffer
@@ -6780,7 +6780,7 @@ PIXI.WebGLSpriteBatch.prototype.start = function()
 {
     var gl = this.gl;
 
-    // bind the main soldierTexture
+    // bind the main soldier1Texture
     gl.activeTexture(gl.TEXTURE0);
 
     // bind the buffers
@@ -6942,7 +6942,7 @@ PIXI.WebGLFastSpriteBatch.prototype.render = function(spriteBatch)
 
     // if the uvs have not updated then no point rendering just yet!
     
-    // check soldierTexture.
+    // check soldier1Texture.
     if(!sprite.texture._uvs)return;
    
     this.currentBaseTexture = sprite.texture.baseTexture;
@@ -7105,7 +7105,7 @@ PIXI.WebGLFastSpriteBatch.prototype.flush = function()
 
     var gl = this.gl;
     
-    // bind the current soldierTexture
+    // bind the current soldier1Texture
 
     if(!this.currentBaseTexture._glTextures[gl.id])PIXI.createWebGLTexture(this.currentBaseTexture, gl);
 
@@ -7146,7 +7146,7 @@ PIXI.WebGLFastSpriteBatch.prototype.start = function()
 {
     var gl = this.gl;
 
-    // bind the main soldierTexture
+    // bind the main soldier1Texture
     gl.activeTexture(gl.TEXTURE0);
 
     // bind the buffers
@@ -7377,11 +7377,11 @@ PIXI.WebGLFilterManager.prototype.popFilter = function()
 
             gl.bindFramebuffer(gl.FRAMEBUFFER, outputTexture.frameBuffer );
 
-            // set soldierTexture
+            // set soldier1Texture
             gl.activeTexture(gl.TEXTURE0);
             gl.bindTexture(gl.TEXTURE_2D, inputTexture.texture);
 
-            // draw soldierTexture..
+            // draw soldier1Texture..
             //filterPass.applyFilterPass(filterArea.width, filterArea.height);
             this.applyFilterPass(filterPass, filterArea, filterArea.width, filterArea.height);
 
@@ -7411,7 +7411,7 @@ PIXI.WebGLFilterManager.prototype.popFilter = function()
 
     var buffer = this.buffer;
 
-    // time to render the filters soldierTexture to the previous scene
+    // time to render the filters soldier1Texture to the previous scene
     if(this.filterStack.length === 0)
     {
         gl.colorMask(true, true, true, this.transparent);
@@ -7478,7 +7478,7 @@ PIXI.WebGLFilterManager.prototype.popFilter = function()
     // set the blend mode! 
     //gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
 
-    // set soldierTexture
+    // set soldier1Texture
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, texture.texture);
 
@@ -7490,7 +7490,7 @@ PIXI.WebGLFilterManager.prototype.popFilter = function()
     gl.uniform2f(this.defaultShader.projectionVector, sizeX/2, -sizeY/2);
     gl.uniform2f(this.defaultShader.offsetVector, -offsetX, -offsetY);
 
-    // return the soldierTexture to the pool
+    // return the soldier1Texture to the pool
     this.texturePool.push(texture);
     filterBlock._glFilterTexture = null;
 };
@@ -7500,7 +7500,7 @@ PIXI.WebGLFilterManager.prototype.popFilter = function()
 * Applies the filter to the specified area
 * @method applyFilterPass
 * @param filter {AbstractFilter} the filter that needs to be applied
-* @param filterArea {soldierTexture} TODO - might need an update
+* @param filterArea {soldier1Texture} TODO - might need an update
 * @param width {Number} the horizontal range of the filter
 * @param height {Number} the vertical range of the filter
 */
@@ -7660,7 +7660,7 @@ PIXI.FilterTexture = function(gl, width, height)
      */
     this.gl = gl;
 
-    // next time to create a frame buffer and soldierTexture
+    // next time to create a frame buffer and soldier1Texture
     this.frameBuffer = gl.createFramebuffer();
     this.texture = gl.createTexture();
 
@@ -7679,7 +7679,7 @@ PIXI.FilterTexture = function(gl, width, height)
 
 
 /**
-* Clears the filter soldierTexture
+* Clears the filter soldier1Texture
 * @method clear
 */
 PIXI.FilterTexture.prototype.clear = function()
@@ -7691,11 +7691,11 @@ PIXI.FilterTexture.prototype.clear = function()
 };
 
 /**
- * Resizes the soldierTexture to the specified width and height
+ * Resizes the soldier1Texture to the specified width and height
  *
  * @method resize
- * @param width {Number} the new width of the soldierTexture
- * @param height {Number} the new height of the soldierTexture
+ * @param width {Number} the new width of the soldier1Texture
+ * @param height {Number} the new height of the soldier1Texture
  */
 PIXI.FilterTexture.prototype.resize = function(width, height)
 {
@@ -7712,7 +7712,7 @@ PIXI.FilterTexture.prototype.resize = function(width, height)
 };
 
 /**
-* Destroys the filter soldierTexture
+* Destroys the filter soldier1Texture
 * @method destroy
 */
 PIXI.FilterTexture.prototype.destroy = function()
@@ -7814,10 +7814,10 @@ PIXI.CanvasTinter.getTintedTexture = function(sprite, color)
 
     if(texture.tintCache[stringColor]) return texture.tintCache[stringColor];
 
-     // clone soldierTexture..
+     // clone soldier1Texture..
     var canvas = PIXI.CanvasTinter.canvas || document.createElement("canvas");
     
-    //PIXI.CanvasTinter.tintWithPerPixel(soldierTexture, stringColor, canvas);
+    //PIXI.CanvasTinter.tintWithPerPixel(soldier1Texture, stringColor, canvas);
 
     
     PIXI.CanvasTinter.tintMethod(texture, color, canvas);
@@ -7834,7 +7834,7 @@ PIXI.CanvasTinter.getTintedTexture = function(sprite, color)
     {
       
         texture.tintCache[stringColor] = canvas;
-        // if we are not converting the soldierTexture to an image then we need to lose the reference to the canvas
+        // if we are not converting the soldier1Texture to an image then we need to lose the reference to the canvas
         PIXI.CanvasTinter.canvas = null;
 
     }
@@ -7843,9 +7843,9 @@ PIXI.CanvasTinter.getTintedTexture = function(sprite, color)
 };
 
 /**
- * Tint a soldierTexture using the "multiply" operation
+ * Tint a soldier1Texture using the "multiply" operation
  * @method tintWithMultiply
- * @param texture {soldierTexture} the soldierTexture to tint
+ * @param texture {soldier1Texture} the soldier1Texture to tint
  * @param color {Number} the color to use to tint the sprite with
  * @param canvas {HTMLCanvasElement} the current canvas
  */
@@ -7888,9 +7888,9 @@ PIXI.CanvasTinter.tintWithMultiply = function(texture, color, canvas)
 };
 
 /**
- * Tint a soldierTexture using the "overlay" operation
+ * Tint a soldier1Texture using the "overlay" operation
  * @method tintWithOverlay
- * @param texture {soldierTexture} the soldierTexture to tint
+ * @param texture {soldier1Texture} the soldier1Texture to tint
  * @param color {Number} the color to use to tint the sprite with
  * @param canvas {HTMLCanvasElement} the current canvas
  */
@@ -7926,9 +7926,9 @@ PIXI.CanvasTinter.tintWithOverlay = function(texture, color, canvas)
 };
 
 /**
- * Tint a soldierTexture pixel per pixel
+ * Tint a soldier1Texture pixel per pixel
  * @method tintPerPixel
- * @param texture {soldierTexture} the soldierTexture to tint
+ * @param texture {soldier1Texture} the soldier1Texture to tint
  * @param color {Number} the color to use to tint the sprite with
  * @param canvas {HTMLCanvasElement} the current canvas
  */
@@ -8958,11 +8958,11 @@ PIXI.Graphics.prototype.clear = function()
 };
 
 /**
- * Useful function that returns a soldierTexture of the graphics object that can then be used to create sprites
+ * Useful function that returns a soldier1Texture of the graphics object that can then be used to create sprites
  * This can be quite useful if your geometry is complicated and needs to be reused multiple times.
  *
  * @method generateTexture
- * @return {Texture} a soldierTexture of the graphics object
+ * @return {Texture} a soldier1Texture of the graphics object
  */
 PIXI.Graphics.prototype.generateTexture = function()
 {
@@ -8996,7 +8996,7 @@ PIXI.Graphics.prototype._renderWebGL = function(renderSession)
         if(this.dirty)
         {
             this._generateCachedSprite();
-            // we will also need to update the soldierTexture on the gpu too!
+            // we will also need to update the soldier1Texture on the gpu too!
             PIXI.updateWebGLTexture(this._cachedSprite.texture.baseTexture, renderSession.gl);
             
             this.dirty =  false;
@@ -9283,7 +9283,7 @@ PIXI.Graphics.ELIP = 3;
  * @class Strip
  * @extends DisplayObjectContainer
  * @constructor
- * @param texture {Texture} The soldierTexture to use
+ * @param texture {Texture} The soldier1Texture to use
  * @param width {Number} the width 
  * @param height {Number} the height
  * 
@@ -9336,7 +9336,7 @@ PIXI.Strip = function(texture, width, height)
     this.width = width;
     this.height = height;
 
-    // load the soldierTexture!
+    // load the soldier1Texture!
     if(texture.baseTexture.hasLoaded)
     {
         this.width   = this.texture.frame.width;
@@ -9357,10 +9357,10 @@ PIXI.Strip.prototype = Object.create(PIXI.DisplayObjectContainer.prototype);
 PIXI.Strip.prototype.constructor = PIXI.Strip;
 
 /*
- * Sets the soldierTexture that the Strip will use
+ * Sets the soldier1Texture that the Strip will use
  *
  * @method setTexture
- * @param soldierTexture {Texture} the soldierTexture that will be used
+ * @param soldier1Texture {Texture} the soldier1Texture that will be used
  * @private
  */
 PIXI.Strip.prototype.setTexture = function(texture)
@@ -9368,7 +9368,7 @@ PIXI.Strip.prototype.setTexture = function(texture)
     //TODO SET THE TEXTURES
     //TODO VISIBILITY
 
-    // stop current soldierTexture
+    // stop current soldier1Texture
     this.texture = texture;
     this.width   = texture.frame.width;
     this.height  = texture.frame.height;
@@ -9376,7 +9376,7 @@ PIXI.Strip.prototype.setTexture = function(texture)
 };
 
 /**
- * When the soldierTexture is updated, this event will fire to update the scale and frame
+ * When the soldier1Texture is updated, this event will fire to update the scale and frame
  *
  * @method onTextureUpdate
  * @param event
@@ -9393,7 +9393,7 @@ PIXI.Strip.prototype.onTextureUpdate = function()
  * 
  * @class Rope
  * @constructor
- * @param texture {Texture} The soldierTexture to use
+ * @param texture {Texture} The soldier1Texture to use
  * @param points {Array}
  * 
  */
@@ -9564,14 +9564,14 @@ PIXI.Rope.prototype.updateTransform = function()
     PIXI.DisplayObjectContainer.prototype.updateTransform.call( this );
 };
 /*
- * Sets the soldierTexture that the Rope will use
+ * Sets the soldier1Texture that the Rope will use
  *
  * @method setTexture
- * @param soldierTexture {Texture} the soldierTexture that will be used
+ * @param soldier1Texture {Texture} the soldier1Texture that will be used
  */
 PIXI.Rope.prototype.setTexture = function(texture)
 {
-    // stop current soldierTexture
+    // stop current soldier1Texture
     this.texture = texture;
     this.updateFrame = true;
 };
@@ -9586,7 +9586,7 @@ PIXI.Rope.prototype.setTexture = function(texture)
  * @class TilingSprite
  * @extends DisplayObjectContainer
  * @constructor
- * @param texture {Texture} the soldierTexture of the tiling sprite
+ * @param texture {Texture} the soldier1Texture of the tiling sprite
  * @param width {Number}  the width of the tiling sprite
  * @param height {Number} the height of the tiling sprite
  */
@@ -9618,7 +9618,7 @@ PIXI.TilingSprite = function(texture, width, height)
     this.tileScale = new PIXI.Point(1,1);
 
     /**
-     * A point that represents the scale of the soldierTexture object
+     * A point that represents the scale of the soldier1Texture object
      *
      * @property tileScaleOffset
      * @type Point
@@ -9699,7 +9699,7 @@ Object.defineProperty(PIXI.TilingSprite.prototype, 'height', {
 });
 
 /**
- * When the soldierTexture is updated, this event will be fired to update the scale and frame
+ * When the soldier1Texture is updated, this event will be fired to update the scale and frame
  *
  * @method onTextureUpdate
  * @param event
@@ -9924,11 +9924,11 @@ PIXI.TilingSprite.prototype.getBounds = function()
 * 
 * @method generateTilingTexture
 * 
-* @param forcePowerOfTwo {Boolean} Whether we want to force the soldierTexture to be a power of two
+* @param forcePowerOfTwo {Boolean} Whether we want to force the soldier1Texture to be a power of two
 */
 PIXI.TilingSprite.prototype.generateTilingTexture = function(forcePowerOfTwo)
 {
-    var texture = this.soldierTexture;
+    var texture = this.soldier1Texture;
 
     if(!texture.baseTexture.hasLoaded)return;
 
@@ -9937,7 +9937,7 @@ PIXI.TilingSprite.prototype.generateTilingTexture = function(forcePowerOfTwo)
 
     var targetWidth, targetHeight;
 
-    // check that the frame is the same size as the base soldierTexture.
+    // check that the frame is the same size as the base soldier1Texture.
     
     var isFrame = frame.width !== baseTexture.width || frame.height !== baseTexture.height;
 
@@ -11468,7 +11468,7 @@ PIXI.texturesToDestroy = [];
 PIXI.BaseTextureCacheIdGenerator = 0;
 
 /**
- * A soldierTexture stores the information that represents an image. All textures have a base soldierTexture
+ * A soldier1Texture stores the information that represents an image. All textures have a base soldier1Texture
  *
  * @class BaseTexture
  * @uses EventTarget
@@ -11481,7 +11481,7 @@ PIXI.BaseTexture = function(source, scaleMode)
     PIXI.EventTarget.call( this );
 
     /**
-     * [read-only] The width of the base soldierTexture set when the image has loaded
+     * [read-only] The width of the base soldier1Texture set when the image has loaded
      *
      * @property width
      * @type Number
@@ -11490,7 +11490,7 @@ PIXI.BaseTexture = function(source, scaleMode)
     this.width = 100;
 
     /**
-     * [read-only] The height of the base soldierTexture set when the image has loaded
+     * [read-only] The height of the base soldier1Texture set when the image has loaded
      *
      * @property height
      * @type Number
@@ -11499,7 +11499,7 @@ PIXI.BaseTexture = function(source, scaleMode)
     this.height = 100;
 
     /**
-     * The scale mode to apply when scaling this soldierTexture
+     * The scale mode to apply when scaling this soldier1Texture
      * @property scaleMode
      * @type PIXI.scaleModes
      * @default PIXI.scaleModes.LINEAR
@@ -11507,7 +11507,7 @@ PIXI.BaseTexture = function(source, scaleMode)
     this.scaleMode = scaleMode || PIXI.scaleModes.DEFAULT;
 
     /**
-     * [read-only] Describes if the base soldierTexture has loaded or not
+     * [read-only] Describes if the base soldier1Texture has loaded or not
      *
      * @property hasLoaded
      * @type Boolean
@@ -11516,7 +11516,7 @@ PIXI.BaseTexture = function(source, scaleMode)
     this.hasLoaded = false;
 
     /**
-     * The source that is loaded to create the soldierTexture
+     * The source that is loaded to create the soldier1Texture
      *
      * @property source
      * @type Image
@@ -11563,7 +11563,7 @@ PIXI.BaseTexture = function(source, scaleMode)
 PIXI.BaseTexture.prototype.constructor = PIXI.BaseTexture;
 
 /**
- * Destroys this base soldierTexture
+ * Destroys this base soldier1Texture
  *
  * @method destroy
  */
@@ -11580,7 +11580,7 @@ PIXI.BaseTexture.prototype.destroy = function()
 };
 
 /**
- * Changes the source image of the soldierTexture
+ * Changes the source image of the soldier1Texture
  *
  * @method updateSourceImage
  * @param newSrc {String} the path of the image
@@ -11593,12 +11593,12 @@ PIXI.BaseTexture.prototype.updateSourceImage = function(newSrc)
 };
 
 /**
- * Helper function that returns a base soldierTexture based on an image url
- * If the image is not in the base soldierTexture cache it will be created and loaded
+ * Helper function that returns a base soldier1Texture based on an image url
+ * If the image is not in the base soldier1Texture cache it will be created and loaded
  *
  * @static
  * @method fromImage
- * @param imageUrl {String} The image url of the soldierTexture
+ * @param imageUrl {String} The image url of the soldier1Texture
  * @param crossorigin {Boolean} 
  * @param scaleMode {Number} Should be one of the PIXI.scaleMode consts
  * @return BaseTexture
@@ -11656,14 +11656,14 @@ PIXI.FrameCache = {};
 PIXI.TextureCacheIdGenerator = 0;
 
 /**
- * A soldierTexture stores the information that represents an image or part of an image. It cannot be added
+ * A soldier1Texture stores the information that represents an image or part of an image. It cannot be added
  * to the display list directly. To do this use PIXI.Sprite. If no frame is provided then the whole image is used
  *
  * @class Texture
  * @uses EventTarget
  * @constructor
- * @param baseTexture {BaseTexture} The base soldierTexture source to create the soldierTexture from
- * @param frame {Rectangle} The rectangle frame of the soldierTexture to show
+ * @param baseTexture {BaseTexture} The base soldier1Texture source to create the soldier1Texture from
+ * @param frame {Rectangle} The rectangle frame of the soldier1Texture to show
  */
 PIXI.Texture = function(baseTexture, frame)
 {
@@ -11679,7 +11679,7 @@ PIXI.Texture = function(baseTexture, frame)
         baseTexture = baseTexture.baseTexture;
 
     /**
-     * The base soldierTexture of that this soldierTexture uses
+     * The base soldier1Texture of that this soldier1Texture uses
      *
      * @property baseTexture
      * @type BaseTexture
@@ -11687,7 +11687,7 @@ PIXI.Texture = function(baseTexture, frame)
     this.baseTexture = baseTexture;
 
     /**
-     * The frame specifies the region of the base soldierTexture that this soldierTexture uses
+     * The frame specifies the region of the base soldier1Texture that this soldier1Texture uses
      *
      * @property frame
      * @type Rectangle
@@ -11720,7 +11720,7 @@ PIXI.Texture = function(baseTexture, frame)
 PIXI.Texture.prototype.constructor = PIXI.Texture;
 
 /**
- * Called when the base soldierTexture is loaded
+ * Called when the base soldier1Texture is loaded
  *
  * @method onBaseTextureLoaded
  * @param event
@@ -11739,10 +11739,10 @@ PIXI.Texture.prototype.onBaseTextureLoaded = function()
 };
 
 /**
- * Destroys this soldierTexture
+ * Destroys this soldier1Texture
  *
  * @method destroy
- * @param destroyBase {Boolean} Whether to destroy the base soldierTexture as well
+ * @param destroyBase {Boolean} Whether to destroy the base soldier1Texture as well
  */
 PIXI.Texture.prototype.destroy = function(destroyBase)
 {
@@ -11753,7 +11753,7 @@ PIXI.Texture.prototype.destroy = function(destroyBase)
  * Specifies the rectangle region of the baseTexture
  *
  * @method setFrame
- * @param frame {Rectangle} The frame of the soldierTexture to set it to
+ * @param frame {Rectangle} The frame of the soldier1Texture to set it to
  */
 PIXI.Texture.prototype.setFrame = function(frame)
 {
@@ -11796,12 +11796,12 @@ PIXI.Texture.prototype._updateWebGLuvs = function()
 };
 
 /**
- * Helper function that returns a soldierTexture based on an image url
- * If the image is not in the soldierTexture cache it will be  created and loaded
+ * Helper function that returns a soldier1Texture based on an image url
+ * If the image is not in the soldier1Texture cache it will be  created and loaded
  *
  * @static
  * @method fromImage
- * @param imageUrl {String} The image url of the soldierTexture
+ * @param imageUrl {String} The image url of the soldier1Texture
  * @param crossorigin {Boolean} Whether requests should be treated as crossorigin
  * @return Texture
  */
@@ -11819,12 +11819,12 @@ PIXI.Texture.fromImage = function(imageUrl, crossorigin, scaleMode)
 };
 
 /**
- * Helper function that returns a soldierTexture based on a frame id
- * If the frame id is not in the soldierTexture cache an error will be thrown
+ * Helper function that returns a soldier1Texture based on a frame id
+ * If the frame id is not in the soldier1Texture cache an error will be thrown
  *
  * @static
  * @method fromFrame
- * @param frameId {String} The frame id of the soldierTexture
+ * @param frameId {String} The frame id of the soldier1Texture
  * @return Texture
  */
 PIXI.Texture.fromFrame = function(frameId)
@@ -11835,12 +11835,12 @@ PIXI.Texture.fromFrame = function(frameId)
 };
 
 /**
- * Helper function that returns a soldierTexture based on a canvas element
- * If the canvas is not in the soldierTexture cache it will be  created and loaded
+ * Helper function that returns a soldier1Texture based on a canvas element
+ * If the canvas is not in the soldier1Texture cache it will be  created and loaded
  *
  * @static
  * @method fromCanvas
- * @param canvas {Canvas} The canvas element source of the soldierTexture
+ * @param canvas {Canvas} The canvas element source of the soldier1Texture
  * @return Texture
  */
 PIXI.Texture.fromCanvas = function(canvas, scaleMode)
@@ -11853,12 +11853,12 @@ PIXI.Texture.fromCanvas = function(canvas, scaleMode)
 
 
 /**
- * Adds a soldierTexture to the textureCache.
+ * Adds a soldier1Texture to the textureCache.
  *
  * @static
  * @method addTextureToCache
  * @param texture {Texture}
- * @param id {String} the id that the soldierTexture will be stored against.
+ * @param id {String} the id that the soldier1Texture will be stored against.
  */
 PIXI.Texture.addTextureToCache = function(texture, id)
 {
@@ -11866,12 +11866,12 @@ PIXI.Texture.addTextureToCache = function(texture, id)
 };
 
 /**
- * Remove a soldierTexture from the textureCache.
+ * Remove a soldier1Texture from the textureCache.
  *
  * @static
  * @method removeTextureFromCache
- * @param id {String} the id of the soldierTexture to be removed
- * @return {Texture} the soldierTexture that was removed
+ * @param id {String} the id of the soldier1Texture to be removed
+ * @return {Texture} the soldier1Texture that was removed
  */
 PIXI.Texture.removeTextureFromCache = function(id)
 {
@@ -11906,7 +11906,7 @@ PIXI.TextureUvs = function()
  */
 
 /**
- A RenderTexture is a special soldierTexture that allows any pixi displayObject to be rendered to it.
+ A RenderTexture is a special soldier1Texture that allows any pixi displayObject to be rendered to it.
 
  __Hint__: All DisplayObjects (exmpl. Sprites) that render on RenderTexture should be preloaded.
  Otherwise black rectangles will be drawn instead.
@@ -11930,22 +11930,22 @@ PIXI.TextureUvs = function()
  * @class RenderTexture
  * @extends Texture
  * @constructor
- * @param width {Number} The width of the render soldierTexture
- * @param height {Number} The height of the render soldierTexture
+ * @param width {Number} The width of the render soldier1Texture
+ * @param height {Number} The height of the render soldier1Texture
  */
 PIXI.RenderTexture = function(width, height, renderer)
 {
     PIXI.EventTarget.call( this );
 
     /**
-     * The with of the render soldierTexture
+     * The with of the render soldier1Texture
      *
      * @property width
      * @type Number
      */
     this.width = width || 100;
     /**
-     * The height of the render soldierTexture
+     * The height of the render soldier1Texture
      *
      * @property height
      * @type Number
@@ -11953,7 +11953,7 @@ PIXI.RenderTexture = function(width, height, renderer)
     this.height = height || 100;
 
     /**
-     * The framing rectangle of the render soldierTexture
+     * The framing rectangle of the render soldier1Texture
      *
      * @property frame
      * @type Rectangle
@@ -11961,7 +11961,7 @@ PIXI.RenderTexture = function(width, height, renderer)
     this.frame = new PIXI.Rectangle(0, 0, this.width, this.height);
 
     /**
-     * The base soldierTexture object that this soldierTexture uses
+     * The base soldier1Texture object that this soldier1Texture uses
      *
      * @property baseTexture
      * @type BaseTexture
@@ -11973,7 +11973,7 @@ PIXI.RenderTexture = function(width, height, renderer)
 
     this.baseTexture.hasLoaded = true;
 
-    // each render soldierTexture can only belong to one renderer at the moment if its webGL
+    // each render soldier1Texture can only belong to one renderer at the moment if its webGL
     this.renderer = renderer || PIXI.defaultRenderer;
 
     if(this.renderer.type === PIXI.WEBGL_RENDERER)
@@ -12027,11 +12027,11 @@ PIXI.RenderTexture.prototype.resize = function(width, height)
 };
 
 /**
- * This function will draw the display object to the soldierTexture.
+ * This function will draw the display object to the soldier1Texture.
  *
  * @method renderWebGL
- * @param displayObject {DisplayObject} The display object to render this soldierTexture on
- * @param clear {Boolean} If true the soldierTexture will be cleared before the displayObject is drawn
+ * @param displayObject {DisplayObject} The display object to render this soldier1Texture on
+ * @param clear {Boolean} If true the soldier1Texture will be cleared before the displayObject is drawn
  * @private
  */
 PIXI.RenderTexture.prototype.renderWebGL = function(displayObject, position, clear)
@@ -12079,11 +12079,11 @@ PIXI.RenderTexture.prototype.renderWebGL = function(displayObject, position, cle
 
 
 /**
- * This function will draw the display object to the soldierTexture.
+ * This function will draw the display object to the soldier1Texture.
  *
  * @method renderCanvas
- * @param displayObject {DisplayObject} The display object to render this soldierTexture on
- * @param clear {Boolean} If true the soldierTexture will be cleared before the displayObject is drawn
+ * @param displayObject {DisplayObject} The display object to render this soldier1Texture on
+ * @param clear {Boolean} If true the soldier1Texture will be cleared before the displayObject is drawn
  * @private
  */
 PIXI.RenderTexture.prototype.renderCanvas = function(displayObject, position, clear)
@@ -12642,8 +12642,8 @@ PIXI.AtlasLoader.prototype.onError = function () {
  * The sprite sheet loader is used to load in JSON sprite sheet data
  * To generate the data you can use http://www.codeandweb.com/texturepacker and publish in the 'JSON' format
  * There is a free version so thats nice, although the paid version is great value for money.
- * It is highly recommended to use Sprite sheets (also know as a 'soldierTexture atlas') as it means sprites can be batched and drawn together for highly increased rendering speed.
- * Once the data has been loaded the frames are stored in the PIXI soldierTexture cache and can be accessed though PIXI.Texture.fromFrameId() and PIXI.Sprite.fromFrameId()
+ * It is highly recommended to use Sprite sheets (also know as a 'soldier1Texture atlas') as it means sprites can be batched and drawn together for highly increased rendering speed.
+ * Once the data has been loaded the frames are stored in the PIXI soldier1Texture cache and can be accessed though PIXI.Texture.fromFrameId() and PIXI.Sprite.fromFrameId()
  * This loader will load the image file that the Spritesheet points to as well as the data.
  * When loaded this class will dispatch a 'loaded' event
  *
@@ -12655,7 +12655,7 @@ PIXI.AtlasLoader.prototype.onError = function () {
  */
 PIXI.SpriteSheetLoader = function (url, crossorigin) {
     /*
-     * i use soldierTexture packer to load the assets..
+     * i use soldier1Texture packer to load the assets..
      * http://www.codeandweb.com/texturepacker
      * make sure to set the format as 'JSON'
      */
@@ -12687,7 +12687,7 @@ PIXI.SpriteSheetLoader = function (url, crossorigin) {
     this.baseUrl = url.replace(/[^\/]*$/, '');
 
     /**
-     * The soldierTexture being loaded
+     * The soldier1Texture being loaded
      *
      * @property texture
      * @type Texture
@@ -12722,7 +12722,7 @@ PIXI.SpriteSheetLoader.prototype.load = function () {
 };
 
 /**
- * Invoke when all files are loaded (json and soldierTexture)
+ * Invoke when all files are loaded (json and soldier1Texture)
  *
  * @method onLoaded
  * @private
@@ -12740,7 +12740,7 @@ PIXI.SpriteSheetLoader.prototype.onLoaded = function () {
 
 /**
  * The image loader class is responsible for loading images file formats ('jpeg', 'jpg', 'png' and 'gif')
- * Once the image has been loaded it is stored in the PIXI soldierTexture cache and can be accessed though PIXI.Texture.fromFrameId() and PIXI.Sprite.fromFrameId()
+ * Once the image has been loaded it is stored in the PIXI soldier1Texture cache and can be accessed though PIXI.Texture.fromFrameId() and PIXI.Sprite.fromFrameId()
  * When loaded this class will dispatch a 'loaded' event
  *
  * @class ImageLoader
@@ -12754,7 +12754,7 @@ PIXI.ImageLoader = function(url, crossorigin)
     PIXI.EventTarget.call(this);
 
     /**
-     * The soldierTexture being loaded
+     * The soldier1Texture being loaded
      *
      * @property texture
      * @type Texture
@@ -12779,10 +12779,10 @@ PIXI.ImageLoader.prototype.constructor = PIXI.ImageLoader;
  */
 PIXI.ImageLoader.prototype.load = function()
 {
-    if(!this.soldierTexture.baseTexture.hasLoaded)
+    if(!this.soldier1Texture.baseTexture.hasLoaded)
     {
         var scope = this;
-        this.soldierTexture.baseTexture.addEventListener('loaded', function()
+        this.soldier1Texture.baseTexture.addEventListener('loaded', function()
         {
             scope.onLoaded();
         });
@@ -12816,15 +12816,15 @@ PIXI.ImageLoader.prototype.onLoaded = function()
 PIXI.ImageLoader.prototype.loadFramedSpriteSheet = function(frameWidth, frameHeight, textureName)
 {
     this.frames = [];
-    var cols = Math.floor(this.soldierTexture.width / frameWidth);
-    var rows = Math.floor(this.soldierTexture.height / frameHeight);
+    var cols = Math.floor(this.soldier1Texture.width / frameWidth);
+    var rows = Math.floor(this.soldier1Texture.height / frameHeight);
 
     var i=0;
     for (var y=0; y<rows; y++)
     {
         for (var x=0; x<cols; x++,i++)
         {
-            var texture = new PIXI.Texture(this.soldierTexture, {
+            var texture = new PIXI.Texture(this.soldier1Texture, {
                 x: x*frameWidth,
                 y: y*frameHeight,
                 width: frameWidth,
@@ -12836,10 +12836,10 @@ PIXI.ImageLoader.prototype.loadFramedSpriteSheet = function(frameWidth, frameHei
         }
     }
 
-    if(!this.soldierTexture.baseTexture.hasLoaded)
+    if(!this.soldier1Texture.baseTexture.hasLoaded)
     {
         var scope = this;
-        this.soldierTexture.baseTexture.addEventListener('loaded', function() {
+        this.soldier1Texture.baseTexture.addEventListener('loaded', function() {
             scope.onLoaded();
         });
     }
@@ -12868,7 +12868,7 @@ PIXI.ImageLoader.prototype.loadFramedSpriteSheet = function(frameWidth, frameHei
 PIXI.BitmapFontLoader = function(url, crossorigin)
 {
     /*
-     * I use soldierTexture packer to load the assets..
+     * I use soldier1Texture packer to load the assets..
      * http://www.codeandweb.com/texturepacker
      * make sure to set the format as 'JSON'
      */
@@ -12900,7 +12900,7 @@ PIXI.BitmapFontLoader = function(url, crossorigin)
     this.baseUrl = url.replace(/[^\/]*$/, '');
 
     /**
-     * [read-only] The soldierTexture of the bitmap font
+     * [read-only] The soldier1Texture of the bitmap font
      *
      * @property baseUrl
      * @type String
@@ -13014,7 +13014,7 @@ PIXI.BitmapFontLoader.prototype.onXMLLoaded = function()
 };
 
 /**
- * Invoked when all files are loaded (xml/fnt and soldierTexture)
+ * Invoked when all files are loaded (xml/fnt and soldier1Texture)
  *
  * @method onLoaded
  * @private
@@ -13160,12 +13160,12 @@ PIXI.AbstractFilter = function(fragmentSrc, uniforms)
 
 /**
  *
- * The AlphaMaskFilter class uses the pixel values from the specified soldierTexture (called the displacement map) to perform a displacement of an object.
+ * The AlphaMaskFilter class uses the pixel values from the specified soldier1Texture (called the displacement map) to perform a displacement of an object.
  * You can use this filter to apply all manor of crazy warping effects
- * Currently the r property of the soldierTexture is used to offset the x and the g propery of the soldierTexture is used to offset the y.
+ * Currently the r property of the soldier1Texture is used to offset the x and the g propery of the soldier1Texture is used to offset the y.
  * @class AlphaMaskFilter
  * @contructor
- * @param texture {Texture} The soldierTexture used for the displacemtent map * must be power of 2 soldierTexture at the moment
+ * @param texture {Texture} The soldier1Texture used for the displacemtent map * must be power of 2 soldier1Texture at the moment
  */
 PIXI.AlphaMaskFilter = function(texture)
 {
@@ -13232,7 +13232,7 @@ PIXI.AlphaMaskFilter.prototype.onTextureLoaded = function()
 };
 
 /**
- * The soldierTexture used for the displacemtent map * must be power of 2 soldierTexture at the moment
+ * The soldier1Texture used for the displacemtent map * must be power of 2 soldier1Texture at the moment
  *
  * @property map
  * @type Texture
@@ -13364,12 +13364,12 @@ Object.defineProperty(PIXI.GrayFilter.prototype, 'gray', {
 
 /**
  *
- * The DisplacementFilter class uses the pixel values from the specified soldierTexture (called the displacement map) to perform a displacement of an object.
+ * The DisplacementFilter class uses the pixel values from the specified soldier1Texture (called the displacement map) to perform a displacement of an object.
  * You can use this filter to apply all manor of crazy warping effects
- * Currently the r property of the soldierTexture is used offset the x and the g propery of the soldierTexture is used to offset the y.
+ * Currently the r property of the soldier1Texture is used offset the x and the g propery of the soldier1Texture is used to offset the y.
  * @class DisplacementFilter
  * @contructor
- * @param texture {Texture} The soldierTexture used for the displacemtent map * must be power of 2 soldierTexture at the moment
+ * @param texture {Texture} The soldier1Texture used for the displacemtent map * must be power of 2 soldier1Texture at the moment
  */
 PIXI.DisplacementFilter = function(texture)
 {
@@ -13443,7 +13443,7 @@ PIXI.DisplacementFilter.prototype.onTextureLoaded = function()
 };
 
 /**
- * The soldierTexture used for the displacemtent map * must be power of 2 soldierTexture at the moment
+ * The soldier1Texture used for the displacemtent map * must be power of 2 soldier1Texture at the moment
  *
  * @property map
  * @type Texture

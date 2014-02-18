@@ -19,6 +19,12 @@ public class Game {
     private int[][] tiles;
     private List<Player> players;
     private List<AbstractBullet> bullets;
+    private long delay = 100;
+    private double speedRatio = delay / 300f;
+
+    public double getSpeedRatio() {
+        return speedRatio;
+    }
 
     public Game() {
         initTiles();
@@ -38,7 +44,7 @@ public class Game {
         while (true) {
             updateUnits();
             try {
-                Thread.sleep(300);
+                Thread.sleep(delay);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -56,16 +62,7 @@ public class Game {
     }
 
     private void initTiles() {
-        tiles = new int[WIDTH][HEIGHT];
-        for (int x = 0; x < WIDTH; x++) {
-            for (int y = 0; y < HEIGHT; y++) {
-
-                if (Math.random() > 0.5f) {
-                    tiles[x][y] = TileTypes.GRASS1;
-                } else
-                    tiles[x][y] = TileTypes.GRASS2;
-            }
-        }
+       tiles = MapManager.getRandomizeTiles(WIDTH, HEIGHT);
     }
 
     public int[][] getTiles() {
@@ -112,5 +109,9 @@ public class Game {
 
     public void setBullets(List<AbstractBullet> bullets) {
         this.bullets = bullets;
+    }
+
+    public long getDelay() {
+        return delay;
     }
 }

@@ -9,10 +9,10 @@ document.body.appendChild(renderer.view);
 
 requestAnimFrame(animate);
 
-// create a soldierTexture from an image path
-var texture = PIXI.Texture.fromImage("soldier.png");
+// create a soldier1Texture from an image path
+var texture = PIXI.Texture.fromImage("soldier1.png");
 
-// create a new Sprite using the soldierTexture
+// create a new Sprite using the soldier1Texture
 var bunny = new PIXI.Sprite(texture);
 
 // center the sprites anchor point
