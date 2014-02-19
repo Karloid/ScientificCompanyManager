@@ -197,6 +197,14 @@ function loadGroundTiles(container, tiles) {
     var grass2Texture = PIXI.Texture.fromImage("game/images/grass2.png");
     var dirt1Texture = PIXI.Texture.fromImage("game/images/dirt1.png");
     var dirt2Texture = PIXI.Texture.fromImage("game/images/dirt2.png");
+    var DIRT_TO_GRASS_HOR1_texture = PIXI.Texture.fromImage("game/images/dirtToGrassHor1.png");
+    var DIRT_TO_GRASS_VERT1_texture = PIXI.Texture.fromImage("game/images/dirtToGrassVert1.png");
+    var GRASS_TO_DIRT_HOR1_texture = PIXI.Texture.fromImage("game/images/grassToDirtHor1.png");
+    var GRASS_TO_DIRT_VER1_texture = PIXI.Texture.fromImage("game/images/grassToDirtVert1.png");
+    var GRASS_TO_DIRT_CORNER_LT1_texture = PIXI.Texture.fromImage("game/images/grassToDirtCornerLT1.png");
+    var GRASS_TO_DIRT_CORNER_LB1_texture = PIXI.Texture.fromImage("game/images/grassToDirtCornerLB1.png");
+    var GRASS_TO_DIRT_CORNER_RT1_texture = PIXI.Texture.fromImage("game/images/grassToDirtCornerRT1.png");
+    var GRASS_TO_DIRT_CORNER_RB1_texture = PIXI.Texture.fromImage("game/images/grassToDirtCornerRB1.png");
     var json = httpGet("/game/tiles");
     //  alert(json);
     obj = JSON.parse(json);
@@ -215,7 +223,25 @@ function loadGroundTiles(container, tiles) {
                 tile = new PIXI.Sprite(dirt1Texture);
             } else if (obj.tiles[x][y] == 4) {
                 tile = new PIXI.Sprite(dirt2Texture);
+            } else if (obj.tiles[x][y] == 5) {
+                tile = new PIXI.Sprite(DIRT_TO_GRASS_HOR1_texture);
+            } else if (obj.tiles[x][y] == 6) {
+                tile = new PIXI.Sprite(DIRT_TO_GRASS_VERT1_texture);
+            } else if (obj.tiles[x][y] == 7) {
+                tile = new PIXI.Sprite(GRASS_TO_DIRT_HOR1_texture);
+            } else if (obj.tiles[x][y] == 8) {
+                tile = new PIXI.Sprite(GRASS_TO_DIRT_VER1_texture);
+            } else if (obj.tiles[x][y] == 9) {
+                tile = new PIXI.Sprite(GRASS_TO_DIRT_CORNER_LT1_texture);
+            } else if (obj.tiles[x][y] == 10) {
+                tile = new PIXI.Sprite(GRASS_TO_DIRT_CORNER_LB1_texture);
+            } else if (obj.tiles[x][y] == 11) {
+                tile = new PIXI.Sprite(GRASS_TO_DIRT_CORNER_RT1_texture);
+            } else if (obj.tiles[x][y] == 12) {
+                tile = new PIXI.Sprite(GRASS_TO_DIRT_CORNER_RB1_texture);
             }
+
+
             tile.position.x = x * CELL_SIZE;
             tile.position.y = y * CELL_SIZE;
             container.addChild(tile);

@@ -2,6 +2,7 @@ package com.krld.manager.web.game;
 
 import com.google.gson.Gson;
 import com.krld.manager.game.Game;
+import com.krld.manager.game.Utils;
 import com.krld.manager.game.model.Player;
 import com.krld.manager.web.WebServer;
 
@@ -21,7 +22,7 @@ public class GameTilesServlet extends HttpServlet {
         Game game = WebServer.getGame();
         Player newPlayer;
         Integer playerId = (Integer) (req.getSession().getAttribute("playerId"));
-        if (playerId == null || true) {
+        if (playerId == null) {
             newPlayer = game.createNewPlayer();
             req.getSession().setAttribute("playerId", newPlayer.getId());
         } else {
@@ -34,6 +35,7 @@ public class GameTilesServlet extends HttpServlet {
                 ",\"height\" : " + Game.HEIGHT +
                 ",\"playerId\" : " + newPlayer.getId() +
                 ",\"delay\" : " + game.getDelay() +
+                ",\"tilesTypes\" : " + Utils.readFile("tileTypes.json") +
                 ",\"tiles\" : " + gson.toJson(tiles) + '}');
         System.out.println("GameTilesServlet triggered for player id: " + playerId);
     }

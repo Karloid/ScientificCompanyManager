@@ -3,7 +3,6 @@ package com.krld.manager.game;
 import com.krld.manager.game.model.AbstractBullet;
 import com.krld.manager.game.model.ActiveUnit;
 import com.krld.manager.game.model.Player;
-import com.krld.manager.game.model.TileTypes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +61,9 @@ public class Game {
     }
 
     private void initTiles() {
-       tiles = MapManager.getRandomizeTiles(WIDTH, HEIGHT);
+        MapManager mapManager = new MapManager();
+        tiles = mapManager.getRandomizeTiles(WIDTH, HEIGHT);
+
     }
 
     public int[][] getTiles() {
