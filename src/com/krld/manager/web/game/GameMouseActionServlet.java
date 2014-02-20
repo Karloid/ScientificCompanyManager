@@ -23,7 +23,8 @@ public class GameMouseActionServlet extends HttpServlet{
         String inputString = new BufferedReader(new InputStreamReader(req.getInputStream())).readLine();
         System.out.println(inputString);
         Game game = WebServer.getGame();
-        Player player = game.getPlayerById((int) (req.getSession().getAttribute("playerId")));
+        int playerId = (Integer) (req.getSession().getAttribute("playerId"));
+        Player player = game.getPlayerById(playerId);
         Map root = new Gson().fromJson(inputString, Map.class);
         player.action((int)Math.round((double)root.get("x")), (int)Math.round((double)root.get("y")));
     }

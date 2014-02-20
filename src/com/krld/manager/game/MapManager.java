@@ -52,7 +52,7 @@ public class MapManager {
         for (Map<String, Object> tile : tiles) {
             tileTypes.add(new TileType((int) Math.round((Double) tile.get("id")), (String) tile.get("name"), (String) tile.get("texture")));
         }
-        System.out.println("tile types: " + tileTypes);
+       // System.out.println("tile types: " + tileTypes);
 
     }
 

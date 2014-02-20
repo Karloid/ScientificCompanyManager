@@ -84,17 +84,13 @@ var soldiers = {};
  soldier.position.x = 200;
  soldier.position.y = 150;
  */
-var tiles = new Array(10);
-for (var i = 0; i < 10; i++) {
-    tiles[i] = new Array(10);
-}
 
 var playerId;
 var lastUpdateDate = new Date().getTime();
 var DELAY = 300;
+var TILES_TYPES;
 
-
-loadGroundTiles(container, tiles);
+loadGroundTiles(container);
 
 //container.addChild(soldier);
 
@@ -192,19 +188,15 @@ function animate() {
     renderer.render(stage);
 }
 
-function loadGroundTiles(container, tiles) {
-    var grass1Texture = PIXI.Texture.fromImage("game/images/grass1.png");
-    var grass2Texture = PIXI.Texture.fromImage("game/images/grass2.png");
-    var dirt1Texture = PIXI.Texture.fromImage("game/images/dirt1.png");
-    var dirt2Texture = PIXI.Texture.fromImage("game/images/dirt2.png");
-    var DIRT_TO_GRASS_HOR1_texture = PIXI.Texture.fromImage("game/images/dirtToGrassHor1.png");
-    var DIRT_TO_GRASS_VERT1_texture = PIXI.Texture.fromImage("game/images/dirtToGrassVert1.png");
-    var GRASS_TO_DIRT_HOR1_texture = PIXI.Texture.fromImage("game/images/grassToDirtHor1.png");
-    var GRASS_TO_DIRT_VER1_texture = PIXI.Texture.fromImage("game/images/grassToDirtVert1.png");
-    var GRASS_TO_DIRT_CORNER_LT1_texture = PIXI.Texture.fromImage("game/images/grassToDirtCornerLT1.png");
-    var GRASS_TO_DIRT_CORNER_LB1_texture = PIXI.Texture.fromImage("game/images/grassToDirtCornerLB1.png");
-    var GRASS_TO_DIRT_CORNER_RT1_texture = PIXI.Texture.fromImage("game/images/grassToDirtCornerRT1.png");
-    var GRASS_TO_DIRT_CORNER_RB1_texture = PIXI.Texture.fromImage("game/images/grassToDirtCornerRB1.png");
+function getTileTextureById(id) {
+    for (i = 0; i <= TILES_TYPES.length -1; i++) {
+        if (TILES_TYPES[i].id == id) {
+            return TILES_TYPES[i].textureImg;
+        }
+    }
+    return null;
+}
+function loadGroundTiles(container) {
     var json = httpGet("/game/tiles");
     //  alert(json);
     obj = JSON.parse(json);
@@ -212,35 +204,16 @@ function loadGroundTiles(container, tiles) {
     HEIGHT_WORLD = obj.height;
     playerId = obj.playerId;
     DELAY = obj.delay;
+    TILES_TYPES = obj.tilesTypes.tiles;
+    for (i = 0; i <= TILES_TYPES.length -1; i++) {
+        currentTile = TILES_TYPES[i];
+        currentTile.textureImg =  PIXI.Texture.fromImage("game/images/" + currentTile.texture);
+      //  alert(currentTile.textureImg );
+    }
     var tile;
     for (x = 0; x < WIDTH_WORLD; x++) {
         for (y = 0; y < HEIGHT_WORLD; y++) {
-            if (obj.tiles[x][y] == 1) {
-                tile = new PIXI.Sprite(grass1Texture);
-            } else if (obj.tiles[x][y] == 2) {
-                tile = new PIXI.Sprite(grass2Texture);
-            } else if (obj.tiles[x][y] == 3) {
-                tile = new PIXI.Sprite(dirt1Texture);
-            } else if (obj.tiles[x][y] == 4) {
-                tile = new PIXI.Sprite(dirt2Texture);
-            } else if (obj.tiles[x][y] == 5) {
-                tile = new PIXI.Sprite(DIRT_TO_GRASS_HOR1_texture);
-            } else if (obj.tiles[x][y] == 6) {
-                tile = new PIXI.Sprite(DIRT_TO_GRASS_VERT1_texture);
-            } else if (obj.tiles[x][y] == 7) {
-                tile = new PIXI.Sprite(GRASS_TO_DIRT_HOR1_texture);
-            } else if (obj.tiles[x][y] == 8) {
-                tile = new PIXI.Sprite(GRASS_TO_DIRT_VER1_texture);
-            } else if (obj.tiles[x][y] == 9) {
-                tile = new PIXI.Sprite(GRASS_TO_DIRT_CORNER_LT1_texture);
-            } else if (obj.tiles[x][y] == 10) {
-                tile = new PIXI.Sprite(GRASS_TO_DIRT_CORNER_LB1_texture);
-            } else if (obj.tiles[x][y] == 11) {
-                tile = new PIXI.Sprite(GRASS_TO_DIRT_CORNER_RT1_texture);
-            } else if (obj.tiles[x][y] == 12) {
-                tile = new PIXI.Sprite(GRASS_TO_DIRT_CORNER_RB1_texture);
-            }
-
+            tile = new PIXI.Sprite(getTileTextureById(obj.tiles[x][y]));
 
             tile.position.x = x * CELL_SIZE;
             tile.position.y = y * CELL_SIZE;

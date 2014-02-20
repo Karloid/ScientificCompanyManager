@@ -19,14 +19,17 @@ import java.io.PrintWriter;
 public class GameTilesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("get tiles servlet!");
         Game game = WebServer.getGame();
         Player newPlayer;
         Integer playerId = (Integer) (req.getSession().getAttribute("playerId"));
         if (playerId == null) {
             newPlayer = game.createNewPlayer();
+            System.out.println("TILES SERVLET create new player: " + newPlayer.getId());
             req.getSession().setAttribute("playerId", newPlayer.getId());
         } else {
             newPlayer = game.getPlayerById(playerId);
+            System.out.println("TILES SERVLET get player by id: " + newPlayer.getId());
         }
         int[][] tiles = game.getTiles();
         Gson gson = new Gson();

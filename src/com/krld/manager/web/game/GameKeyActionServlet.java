@@ -23,7 +23,8 @@ public class GameKeyActionServlet extends HttpServlet{
         String inputString = new BufferedReader(new InputStreamReader(req.getInputStream())).readLine();
         System.out.println(inputString);
         Game game = WebServer.getGame();
-        Player player = game.getPlayerById((int) (req.getSession().getAttribute("playerId")));
+        Integer playerId = (Integer) (req.getSession().getAttribute("playerId"));
+        Player player = game.getPlayerById(playerId);
         Map root = new Gson().fromJson(inputString, Map.class);
         player.setMoveUp((boolean)root.get("w"));
         player.setMoveDown((boolean)root.get("s"));
