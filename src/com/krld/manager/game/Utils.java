@@ -33,4 +33,15 @@ public class Utils {
         }
         return string;
     }
+
+    public static double getAngleTo(int x, int y, int x1, int y1) {
+        int deltaX = x1 - x;
+        int deltaY = y1 - y;
+        double angleInDegrees = (float) (Math.atan2(deltaY, deltaX) * 180 / Math.PI);
+        return angleInDegrees;
+    }
+
+    public static Double getDistanceTo(int x, int y, int x1, int y1) {
+        return Math.sqrt(Math.pow(x1 - x, 2) + Math.pow(y1 - y, 2));
+    }
 }

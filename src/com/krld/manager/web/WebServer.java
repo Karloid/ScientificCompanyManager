@@ -1,7 +1,7 @@
 package com.krld.manager.web;
 
 import com.krld.manager.game.Game;
-import com.krld.manager.web.game.GamePlayersServlet;
+import com.krld.manager.web.game.GameStateServlet;
 import com.krld.manager.web.game.GameMouseActionServlet;
 import com.krld.manager.web.game.GameKeyActionServlet;
 import com.krld.manager.web.game.GameTilesServlet;
@@ -45,7 +45,7 @@ public class WebServer {
         webapp.addServlet(GameTilesServlet.class, "/game/tiles");
         webapp.addServlet(GameKeyActionServlet.class, "/game/keyAction");
         webapp.addServlet(GameMouseActionServlet.class, "/game/mouseAction");
-        webapp.addServlet(GamePlayersServlet.class, "/game/players");
+        webapp.addServlet(GameStateServlet.class, "/game/state");
     }
 
     private static void mappingPageServlets(WebAppContext webapp) {

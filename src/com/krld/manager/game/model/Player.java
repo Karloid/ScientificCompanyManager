@@ -7,11 +7,12 @@ import com.krld.manager.game.Game;
  */
 public class Player extends ActiveUnit {
 
+    public static final int SPEED = 10;
     private int spriteType;
 
     public Player(int x, int y, Game game) {
         super(x, y, game);
-        setSpeed(10 * game.getSpeedRatio());
+        setSpeed(SPEED * game.getSpeedRatio());
         randomizeSpriteType();
 
     }

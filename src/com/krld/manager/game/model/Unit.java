@@ -38,4 +38,5 @@ public abstract class Unit {
         return context;
     }
 
+    public abstract void update();
 }

@@ -5,6 +5,7 @@ import com.krld.manager.game.model.ActiveUnit;
 import com.krld.manager.game.model.Player;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ public class Game {
     public static final int WIDTH = 30;
     public static final int HEIGHT = 20;
     private static final int CELL_SIZE = 32;
-    private  int currentId = -1;
+    private int currentId = -1;
     private int[][] tiles;
     private List<Player> players;
     private List<AbstractBullet> bullets;
@@ -51,7 +52,28 @@ public class Game {
     }
 
     private void updateUnits() {
+        updateBullets();
         updatePlayers();
+    }
+
+    private void updateBullets() {
+        List<AbstractBullet> bulletsToRemove = null;
+        for (AbstractBullet bullet : bullets) {
+            bullet.update();
+            if (bullet.isDead()) {
+                if (bulletsToRemove == null) {
+                    bulletsToRemove = new ArrayList<AbstractBullet>();
+                }
+                bulletsToRemove.add(bullet);
+            }
+        }
+        if (bulletsToRemove != null) {
+            bullets.removeAll(bulletsToRemove);
+            List<AbstractBullet> bulletsTmp = new ArrayList<>();
+      //      Collections.copy(bulletsTmp, bullets);
+       //     bulletsTmp.removeAll(bulletsToRemove);
+         //   bullets = bulletsTmp;
+        }
     }
 
     private void updatePlayers() {

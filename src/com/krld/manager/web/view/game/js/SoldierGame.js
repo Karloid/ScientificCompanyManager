@@ -70,6 +70,8 @@ var soldier2Texture = PIXI.Texture.fromImage("game/images/soldier2.png");
 var soldier3Texture = PIXI.Texture.fromImage("game/images/soldier3.png");
 var soldier4Texture = PIXI.Texture.fromImage("game/images/soldier4.png");
 
+var bulletTexture =  PIXI.Texture.fromImage("game/images/bullet.png");
+
 
 // create a new Sprite using the soldier1Texture
 //var soldier = new PIXI.Sprite(soldier1Texture);
@@ -89,6 +91,8 @@ var playerId;
 var lastUpdateDate = new Date().getTime();
 var DELAY = 300;
 var TILES_TYPES;
+
+var BULLETS = [];
 
 loadGroundTiles(container);
 
@@ -163,13 +167,29 @@ function getPlayer(id, spriteType) {
     }
     return soldier;
 }
-function getPlayersPositions() {
+function getBullet(id) {
+    var bullet = BULLETS[id];
+    if (!bullet) {
+        bullet = {
+            id: id,
+            sprite: new PIXI.Sprite(bulletTexture)
+        };
+        bullet.sprite.anchor.x = 0.5;
+        bullet.sprite.anchor.y = 0.5;
+        BULLETS[id] = bullet;
+
+        container.addChild(bullet.sprite);
+
+    }
+    return bullet;
+}
+function getWorldState() {
     var currentDate = new Date().getTime();
     if (currentDate - lastUpdateDate < DELAY) {
         return;
     }
     lastUpdateDate = currentDate;
-    var json = httpGet("/game/players");
+    var json = httpGet("/game/state");
     obj = JSON.parse(json);
     for (i = 0; i < obj.players.length; i++) {
         player = getPlayer(obj.players[i].id, obj.players[i].spriteType);
@@ -177,11 +197,19 @@ function getPlayersPositions() {
         player.sprite.position.y = obj.players[i].y;
     }
 
+    for (i = 0; i < obj.bullets.length; i++) {
+        bullet = getBullet(obj.bullets[i].id);
+        bullet.sprite.position.x = obj.bullets[i].x;
+        bullet.sprite.position.y = obj.bullets[i].y;
+    }
+
+
+
 }
 function animate() {
     handleUserInput();
 
-    getPlayersPositions();
+    getWorldState();
 
     requestAnimFrame(animate);
 
