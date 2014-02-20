@@ -63,11 +63,11 @@ public class MapManager {
         tiles[x + 1][y] = getTileTypeByName("GRASS_TO_DIRT_HOR1").getId();
         tiles[x + 2][y] = getTileTypeByName("GRASS_TO_DIRT_HOR1").getId();
         tiles[x + 3][y] = getTileTypeByName("GRASS_TO_DIRT_CORNER_RT1").getId();
-        tiles[x + 3][y + 1] =getTileTypeByName("DIRT_TO_GRASS_HOR1").getId();
-        tiles[x + 3][y + 2] = getTileTypeByName("DIRT_TO_GRASS_HOR1").getId();
+        tiles[x + 3][y + 1] =getTileTypeByName("DIRT_TO_GRASS_VER1").getId();
+        tiles[x + 3][y + 2] = getTileTypeByName("DIRT_TO_GRASS_VER1").getId();
         tiles[x + 3][y + 3] =  getTileTypeByName("GRASS_TO_DIRT_CORNER_RB1").getId();
-        tiles[x + 2][y + 3] = getTileTypeByName("DIRT_TO_GRASS_VERT1").getId();
-        tiles[x + 1][y + 3] = getTileTypeByName("DIRT_TO_GRASS_VERT1").getId();
+        tiles[x + 2][y + 3] = getTileTypeByName("DIRT_TO_GRASS_HOR1").getId();
+        tiles[x + 1][y + 3] = getTileTypeByName("DIRT_TO_GRASS_HOR1").getId();
         tiles[x][y + 3] = getTileTypeByName("GRASS_TO_DIRT_CORNER_LB1").getId();
         tiles[x][y + 2] = getTileTypeByName("GRASS_TO_DIRT_VER1").getId();
         tiles[x][y + 1] = getTileTypeByName("GRASS_TO_DIRT_VER1").getId();

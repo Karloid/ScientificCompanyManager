@@ -5,14 +5,14 @@
     			{"id" : 3, "name" :  "DIRT1", 				      "texture" : "dirt1.png"},
     			{"id" : 4, "name" :  "DIRT2", 				      "texture" : "dirt2.png"},
     			{"id" : 5, "name" :  "DIRT_TO_GRASS_HOR1",        "texture" : "dirtToGrassHor1.png"},
-    			{"id" : 6, "name" :  "DIRT_TO_GRASS_VERT1",       "texture" : "dirtToGrassVert1.png"},
+    			{"id" : 6, "name" :  "DIRT_TO_GRASS_VER1",        "texture" : "dirtToGrassVert1.png"},
                 {"id" : 7, "name" :  "GRASS_TO_DIRT_HOR1",        "texture" : "grassToDirtHor1.png"}, 
                 {"id" : 8, "name" :  "GRASS_TO_DIRT_VER1",        "texture" : "grassToDirtVert1.png"}, 
                 {"id" : 9, "name" :  "GRASS_TO_DIRT_CORNER_LT1",  "texture" : "grassToDirtCornerLT1.png"}, 
                 {"id" : 10, "name" : "GRASS_TO_DIRT_CORNER_LB1",  "texture" : "grassToDirtCornerLB1.png"}, 
                 {"id" : 11, "name" : "GRASS_TO_DIRT_CORNER_RT1",  "texture" : "grassToDirtCornerRT1.png"}, 
                 {"id" : 12, "name" : "GRASS_TO_DIRT_CORNER_RB1",  "texture" : "grassToDirtCornerRB1.png"}
-    			 ]  
+    			 ]
     }
 
 
