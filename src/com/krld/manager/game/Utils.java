@@ -34,11 +34,12 @@ public class Utils {
         return string;
     }
 
-    public static double getAngleTo(int x, int y, int x1, int y1) {
-        int deltaX = x1 - x;
-        int deltaY = y1 - y;
-        double angleInDegrees = (float) (Math.atan2(deltaY, deltaX) * 180 / Math.PI);
-        return angleInDegrees;
+    public static double getAngleTo(int x1, int y1, int x2, int y2) {
+        int deltaX = x2 - x1;
+        int deltaY = y2 - y1;
+        double angleInRadians =  (Math.atan2(deltaY, deltaX));
+     //   double angleInRadians =  (Math.atan2(deltaY, deltaX) * 180 / Math.PI);
+        return angleInRadians;
     }
 
     public static Double getDistanceTo(int x, int y, int x1, int y1) {

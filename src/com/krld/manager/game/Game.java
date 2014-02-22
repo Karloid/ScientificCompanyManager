@@ -14,13 +14,15 @@ import java.util.List;
 public class Game {
     public static final int WIDTH = 30;
     public static final int HEIGHT = 20;
-    private static final int CELL_SIZE = 32;
+    public static final int CELL_SIZE = 32;
     private int currentId = -1;
     private int[][] tiles;
     private List<Player> players;
     private List<AbstractBullet> bullets;
     private long delay = 100;
     private double speedRatio = delay / 300f;
+    private List<Spawn> spawns;
+    private MapManager mapManager;
 
     public double getSpeedRatio() {
         return speedRatio;
@@ -28,6 +30,7 @@ public class Game {
 
     public Game() {
         initTiles();
+
         players = new ArrayList<Player>();
         bullets = new ArrayList<AbstractBullet>();
 
@@ -37,6 +40,26 @@ public class Game {
                 runGameLoop();
             }
         }).start();
+
+    }
+
+    private void initSpawns() {
+        spawns = new ArrayList<Spawn>();
+
+        int countCreatedSpawn = 0;
+        int n = 7;
+        int x;
+        int y;
+        while (countCreatedSpawn < n) {
+            x = (int) (Math.random() * WIDTH);
+            y = (int) (Math.random() * HEIGHT);
+            if (tiles[x][y] == mapManager.getTileTypeByName("GRASS1").getId()) {
+                tiles[x][y] = mapManager.getTileTypeByName("SPAWN1").getId();
+                spawns.add(new Spawn(x * CELL_SIZE / 2, y * CELL_SIZE / 2, this));
+            }
+            countCreatedSpawn++;
+        }
+
 
     }
 
@@ -70,9 +93,9 @@ public class Game {
         if (bulletsToRemove != null) {
             bullets.removeAll(bulletsToRemove);
             List<AbstractBullet> bulletsTmp = new ArrayList<>();
-      //      Collections.copy(bulletsTmp, bullets);
-       //     bulletsTmp.removeAll(bulletsToRemove);
-         //   bullets = bulletsTmp;
+            //      Collections.copy(bulletsTmp, bullets);
+            //     bulletsTmp.removeAll(bulletsToRemove);
+            //   bullets = bulletsTmp;
         }
     }
 
@@ -83,8 +106,9 @@ public class Game {
     }
 
     private void initTiles() {
-        MapManager mapManager = new MapManager();
+        mapManager = new MapManager();
         tiles = mapManager.getRandomizeTiles(WIDTH, HEIGHT);
+        initSpawns();
 
     }
 
@@ -97,6 +121,7 @@ public class Game {
     }
 
     public Player createNewPlayer() {
+
         Player player = new Player((int) (Math.random() * WIDTH * CELL_SIZE),
                 (int) (Math.random() * HEIGHT * CELL_SIZE), this);
         players.add(player);

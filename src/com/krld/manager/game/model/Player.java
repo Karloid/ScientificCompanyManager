@@ -8,12 +8,15 @@ import com.krld.manager.game.Game;
 public class Player extends ActiveUnit {
 
     public static final int SPEED = 10;
+    private static final long STANDART_COOLDOWN = 400;
     private int spriteType;
+    private long lastTimeShot;
 
     public Player(int x, int y, Game game) {
         super(x, y, game);
         setSpeed(SPEED * game.getSpeedRatio());
         randomizeSpriteType();
+        lastTimeShot = System.currentTimeMillis();
 
     }
 
@@ -36,7 +39,21 @@ public class Player extends ActiveUnit {
     }
 
     private void shootTo(int x, int y) {
-        getContext().getBullets().add(new Bullet(this, getContext(), x, y));
+        if (readyToSoot())
+            getContext().getBullets().add(new Bullet(this, getContext(), x, y));
+    }
+
+    private boolean readyToSoot() {
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastTimeShot > getCooldownTime() )  {
+            lastTimeShot = currentTime;
+            return true;
+        }
+        return false;
+    }
+
+    private long getCooldownTime() {
+        return STANDART_COOLDOWN;
     }
 
     public int getSpriteType() {

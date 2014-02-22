@@ -11,7 +11,8 @@
                 {"id" : 9, "name" :  "GRASS_TO_DIRT_CORNER_LT1",  "texture" : "grassToDirtCornerLT1.png"}, 
                 {"id" : 10, "name" : "GRASS_TO_DIRT_CORNER_LB1",  "texture" : "grassToDirtCornerLB1.png"}, 
                 {"id" : 11, "name" : "GRASS_TO_DIRT_CORNER_RT1",  "texture" : "grassToDirtCornerRT1.png"}, 
-                {"id" : 12, "name" : "GRASS_TO_DIRT_CORNER_RB1",  "texture" : "grassToDirtCornerRB1.png"}
+                {"id" : 12, "name" : "GRASS_TO_DIRT_CORNER_RB1",  "texture" : "grassToDirtCornerRB1.png"},
+                {"id" : 13, "name" : "SPAWN1",                    "texture" : "spawn1.png"}
     			 ]
     }
 

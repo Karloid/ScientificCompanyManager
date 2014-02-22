@@ -172,7 +172,8 @@ function getBullet(id) {
     if (!bullet) {
         bullet = {
             id: id,
-            sprite: new PIXI.Sprite(bulletTexture)
+            sprite: new PIXI.Sprite(bulletTexture),
+            updated: false
         };
         bullet.sprite.anchor.x = 0.5;
         bullet.sprite.anchor.y = 0.5;
@@ -182,6 +183,20 @@ function getBullet(id) {
 
     }
     return bullet;
+}
+function removeOldBullets() {
+   for (var i = BULLETS.length - 1; i >= 0; i--) {
+       if (BULLETS[i] && !BULLETS[i].updated) {
+           container.removeChild(BULLETS[i].sprite);
+           BULLETS.splice(i, 1);
+       }
+   }
+
+    for (var i = BULLETS.length - 1; i >= 0; i--) {
+        if (BULLETS[i]) {
+            BULLETS[i].updated = false;
+        }
+    }
 }
 function getWorldState() {
     var currentDate = new Date().getTime();
@@ -197,11 +212,15 @@ function getWorldState() {
         player.sprite.position.y = obj.players[i].y;
     }
 
+
     for (i = 0; i < obj.bullets.length; i++) {
         bullet = getBullet(obj.bullets[i].id);
         bullet.sprite.position.x = obj.bullets[i].x;
         bullet.sprite.position.y = obj.bullets[i].y;
+        bullet.updated = true;
     }
+
+    removeOldBullets();
 
 
 

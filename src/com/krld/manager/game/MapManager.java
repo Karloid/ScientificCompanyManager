@@ -77,7 +77,7 @@ public class MapManager {
         tiles[x + 2][y + 2] = getTileTypeByName("DIRT2").getId(); ;
     }
 
-    private TileType getTileTypeByName(String name) {
+    public TileType getTileTypeByName(String name) {
         for (TileType tileType : tileTypes) {
             if (tileType.getName().equals(name)) {
                 return tileType;
