@@ -31,9 +31,10 @@ public class GameStateServlet extends HttpServlet {
         for (Player player : players) {
             HashMap<String, Object> playerMap = new HashMap<>();
             playerMap.put("id", player.getId());
+            playerMap.put("hp", player.getHp());
             playerMap.put("x", player.getPosition().getX());
             playerMap.put("y", player.getPosition().getY());
-            playerMap.put("spriteType", player.getSpriteType());
+            playerMap.put("spriteId", player.getSpriteId());
             playersList.add(playerMap);
         }
 
@@ -47,6 +48,6 @@ public class GameStateServlet extends HttpServlet {
         }
 
         writer.println(" {  \"players\" : " + gson.toJson(playersList) +
-                          ", \"bullets\" :" + gson.toJson(bulletsList) +    '}');
+                ", \"bullets\" :" + gson.toJson(bulletsList) + '}');
     }
 }

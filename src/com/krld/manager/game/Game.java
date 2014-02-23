@@ -3,9 +3,9 @@ package com.krld.manager.game;
 import com.krld.manager.game.model.AbstractBullet;
 import com.krld.manager.game.model.ActiveUnit;
 import com.krld.manager.game.model.Player;
+import com.krld.manager.game.model.Unit;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -15,8 +15,10 @@ public class Game {
     public static final int WIDTH = 30;
     public static final int HEIGHT = 20;
     public static final int CELL_SIZE = 32;
+    public static final int PASSABLE_CELL_SIZE = 4;
     private int currentId = -1;
     private int[][] tiles;
+    private int[][] passable;
     private List<Player> players;
     private List<AbstractBullet> bullets;
     private long delay = 100;
@@ -43,29 +45,49 @@ public class Game {
 
     }
 
+    private void analyzeTiles() {
+        initSpawns();
+        initPassable();
+    }
+
+    private void initPassable() {
+        int passableWidth = (WIDTH * CELL_SIZE) / PASSABLE_CELL_SIZE;
+        int passableHeight = (HEIGHT * CELL_SIZE) / PASSABLE_CELL_SIZE;
+        passable = new int[passableWidth][passableHeight];
+        for (int x = 0; x < passableWidth; x++) {
+            for (int y = 0; y < passableHeight; y++) {
+                passable[x][y] = 1;
+            }
+        }
+
+        for (int x = 0; x < WIDTH; x++) {
+            for (int y = 0; y < HEIGHT; y++) {
+                if (mapManager.haveTag(tiles[x][y], "IMPASSABLE")) {
+                    for (int xx = 0; xx < CELL_SIZE / PASSABLE_CELL_SIZE; xx++)
+                        for (int yy = 0; yy < CELL_SIZE / PASSABLE_CELL_SIZE; yy++)
+                            passable[(x * CELL_SIZE) / PASSABLE_CELL_SIZE + xx][(y * CELL_SIZE) / PASSABLE_CELL_SIZE + yy] = 0;
+                }
+            }
+        }
+
+    }
+
     private void initSpawns() {
         spawns = new ArrayList<Spawn>();
 
-        int countCreatedSpawn = 0;
-        int n = 7;
-        int x;
-        int y;
-        while (countCreatedSpawn < n) {
-            x = (int) (Math.random() * WIDTH);
-            y = (int) (Math.random() * HEIGHT);
-            if (tiles[x][y] == mapManager.getTileTypeByName("GRASS1").getId()) {
-                tiles[x][y] = mapManager.getTileTypeByName("SPAWN1").getId();
-                spawns.add(new Spawn(x * CELL_SIZE / 2, y * CELL_SIZE / 2, this));
+        for (int x = 0; x < WIDTH; x++) {
+            for (int y = 0; y < HEIGHT; y++) {
+                if (tiles[x][y] == mapManager.getTileTypeByName("SPAWN1").getId()) {
+                    spawns.add(new Spawn((x * CELL_SIZE) + CELL_SIZE / 2, (y * CELL_SIZE) + CELL_SIZE / 2, this));
+                }
             }
-            countCreatedSpawn++;
         }
-
-
     }
 
     private void runGameLoop() {
         while (true) {
             updateUnits();
+
             try {
                 Thread.sleep(delay);
             } catch (InterruptedException e) {
@@ -77,6 +99,16 @@ public class Game {
     private void updateUnits() {
         updateBullets();
         updatePlayers();
+        respawnDeadPlayers();
+    }
+
+    private void respawnDeadPlayers() {
+        for (Player player : players) {
+            if (!player.isAlive()) {
+                spawnPlayer(player);
+                player.setHp(Unit.MAX_HP);
+            }
+        }
     }
 
     private void updateBullets() {
@@ -107,8 +139,9 @@ public class Game {
 
     private void initTiles() {
         mapManager = new MapManager();
-        tiles = mapManager.getRandomizeTiles(WIDTH, HEIGHT);
-        initSpawns();
+     //   tiles = mapManager.getRandomizeTiles(WIDTH, HEIGHT);
+        tiles = mapManager.loadMapFromFile("mapHouses.json");
+        analyzeTiles();
 
     }
 
@@ -122,10 +155,20 @@ public class Game {
 
     public Player createNewPlayer() {
 
-        Player player = new Player((int) (Math.random() * WIDTH * CELL_SIZE),
-                (int) (Math.random() * HEIGHT * CELL_SIZE), this);
+       /* Player player = new Player((int) (Math.random() * WIDTH * CELL_SIZE),
+                (int) (Math.random() * HEIGHT * CELL_SIZE), this);*/
+        Player player = new Player(-100, -100, this);
         players.add(player);
+        spawnPlayer(player);
+
         return player;
+    }
+
+    private void spawnPlayer(Player player) {
+        int randomIndex = (int) (Math.random() * spawns.size());
+        Spawn spawn = spawns.get(randomIndex);
+        player.getPosition().setX(spawn.getPosition().getX());
+        player.getPosition().setY(spawn.getPosition().getY());
     }
 
     public int getNextId() {
@@ -161,5 +204,35 @@ public class Game {
 
     public long getDelay() {
         return delay;
+    }
+
+    public MapManager getMapManager() {
+        return mapManager;
+    }
+
+    public int[][] getPassable() {
+        return passable;
+    }
+
+    public boolean inPassableFrame(int passableX, int passableY) {
+        if (passableX >= 0 && passableX <= (WIDTH * CELL_SIZE) / PASSABLE_CELL_SIZE
+                && passableY >= 0 && passableY <= (HEIGHT * CELL_SIZE) / PASSABLE_CELL_SIZE) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isPassablePlace(int x, int y) {
+        int[][] passable = getPassable();
+        int passableX = x / Game.PASSABLE_CELL_SIZE;
+        int passableY = y / Game.PASSABLE_CELL_SIZE;
+        if (!inPassableFrame(passableX, passableY)) {
+            return false;
+        }
+        int value = passable[passableX][passableY];
+        if (value == 1) {
+            return true;
+        }
+        return false;
     }
 }

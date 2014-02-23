@@ -70,7 +70,7 @@ var soldier2Texture = PIXI.Texture.fromImage("game/images/soldier2.png");
 var soldier3Texture = PIXI.Texture.fromImage("game/images/soldier3.png");
 var soldier4Texture = PIXI.Texture.fromImage("game/images/soldier4.png");
 
-var bulletTexture =  PIXI.Texture.fromImage("game/images/bullet.png");
+var bulletTexture = PIXI.Texture.fromImage("game/images/bullet.png");
 
 
 // create a new Sprite using the soldier1Texture
@@ -95,6 +95,14 @@ var TILES_TYPES;
 var BULLETS = [];
 
 loadGroundTiles(container);
+
+/*var graphics = new PIXI.Graphics();
+ container.addChild(graphics);
+
+ graphics.lineStyle(5, 0xFF3300, 1);
+
+ graphics.drawRect(50, 250, 100, 100);*/
+
 
 //container.addChild(soldier);
 
@@ -150,19 +158,23 @@ function getTexture(spriteType) {
     }
 
 }
-function getPlayer(id, spriteType) {
+function getPlayer(id, spriteId) {
     var soldier = soldiers[id];
     if (!soldier) {
         soldier = {
             id: id,
-            spriteType: spriteType,
-            sprite: new PIXI.Sprite(getTexture(spriteType))
+            spriteId: spriteId,
+            sprite: new PIXI.Sprite(getTileTextureById(spriteId)),
+            hpBar: new PIXI.Graphics(),
+            hp: 0
         };
         soldier.sprite.anchor.x = 0.5;
         soldier.sprite.anchor.y = 0.5;
+
         soldiers[id] = soldier;
 
         container.addChild(soldier.sprite);
+        container.addChild(soldier.hpBar);
 
     }
     return soldier;
@@ -185,18 +197,32 @@ function getBullet(id) {
     return bullet;
 }
 function removeOldBullets() {
-   for (var i = BULLETS.length - 1; i >= 0; i--) {
-       if (BULLETS[i] && !BULLETS[i].updated) {
-           container.removeChild(BULLETS[i].sprite);
-           BULLETS.splice(i, 1);
-       }
-   }
+    for (var i = BULLETS.length - 1; i >= 0; i--) {
+        if (BULLETS[i] && !BULLETS[i].updated) {
+            container.removeChild(BULLETS[i].sprite);
+            BULLETS.splice(i, 1);
+        }
+    }
 
     for (var i = BULLETS.length - 1; i >= 0; i--) {
         if (BULLETS[i]) {
             BULLETS[i].updated = false;
         }
     }
+}
+function updatePlayer(player, x, y, hp) {
+    player.sprite.position.x = x;
+    player.sprite.position.y = y;
+    player.hp = hp;
+    // return;
+    container.removeChild(player.hpBar);
+    player.hpBar = new PIXI.Graphics();
+    player.hpBar.lineStyle(5, 0xFF0000, 1);
+    player.hpBar.moveTo(x - CELL_SIZE / 2 - 1, y - CELL_SIZE / 2);
+    player.hpBar.lineTo(x - CELL_SIZE / 2 + CELL_SIZE / 100 * player.hp, y - CELL_SIZE / 2);
+    container.addChild(player.hpBar)
+
+
 }
 function getWorldState() {
     var currentDate = new Date().getTime();
@@ -206,10 +232,10 @@ function getWorldState() {
     lastUpdateDate = currentDate;
     var json = httpGet("/game/state");
     obj = JSON.parse(json);
-    for (i = 0; i < obj.players.length; i++) {
-        player = getPlayer(obj.players[i].id, obj.players[i].spriteType);
-        player.sprite.position.x = obj.players[i].x;
-        player.sprite.position.y = obj.players[i].y;
+    for (j = 0; j < obj.players.length; j++) {
+        player = getPlayer(obj.players[j].id, obj.players[j].spriteId);
+
+        updatePlayer(player, obj.players[j].x, obj.players[j].y, obj.players[j].hp);
     }
 
 
@@ -223,6 +249,8 @@ function getWorldState() {
     removeOldBullets();
 
 
+}
+function testGraphics() {
 
 }
 function animate() {
@@ -230,13 +258,15 @@ function animate() {
 
     getWorldState();
 
+    testGraphics();
+
     requestAnimFrame(animate);
 
     renderer.render(stage);
 }
 
 function getTileTextureById(id) {
-    for (i = 0; i <= TILES_TYPES.length -1; i++) {
+    for (i = 0; i <= TILES_TYPES.length - 1; i++) {
         if (TILES_TYPES[i].id == id) {
             return TILES_TYPES[i].textureImg;
         }
@@ -252,10 +282,10 @@ function loadGroundTiles(container) {
     playerId = obj.playerId;
     DELAY = obj.delay;
     TILES_TYPES = obj.tilesTypes.tiles;
-    for (i = 0; i <= TILES_TYPES.length -1; i++) {
+    for (i = 0; i <= TILES_TYPES.length - 1; i++) {
         currentTile = TILES_TYPES[i];
-        currentTile.textureImg =  PIXI.Texture.fromImage("game/images/" + currentTile.texture);
-      //  alert(currentTile.textureImg );
+        currentTile.textureImg = PIXI.Texture.fromImage("game/images/" + currentTile.texture);
+        //  alert(currentTile.textureImg );
     }
     var tile;
     for (x = 0; x < WIDTH_WORLD; x++) {

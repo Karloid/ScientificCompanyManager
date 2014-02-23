@@ -17,11 +17,11 @@ public abstract class ActiveUnit extends Unit {
     }
 
     public void update() {
-
-        updatePosition();
+        if (isAlive())
+            move();
     }
 
-    private void updatePosition() {
+    private void move() {
         if (!isMoveDown() && !isMoveLeft() && !isMoveRight() && !isMoveUp()) {
             return;
         }
@@ -30,23 +30,28 @@ public abstract class ActiveUnit extends Unit {
             angle = 45;
         } else if (isMoveLeft() && isMoveDown()) {
             angle = 135;
-        }else if (isMoveLeft() && isMoveUp()) {
+        } else if (isMoveLeft() && isMoveUp()) {
             angle = 225;
-        }else if (isMoveRight() && isMoveUp()) {
+        } else if (isMoveRight() && isMoveUp()) {
             angle = 315;
-        }else if (isMoveRight()) {
+        } else if (isMoveRight()) {
             angle = 0;
-        }else if (isMoveDown()) {
+        } else if (isMoveDown()) {
             angle = 90;
-        }else if (isMoveLeft()) {
+        } else if (isMoveLeft()) {
             angle = 180;
-        }else if (isMoveUp()) {
+        } else if (isMoveUp()) {
             angle = 270;
         }
 
-        getPosition().setX((int) (getPosition().getX() + speed * Math.cos(angle / 180 * Math.PI)));
-        getPosition().setY((int) (getPosition().getY() + speed * Math.sin(angle / 180 * Math.PI)));
+        int newX = (int) (getPosition().getX() + speed * Math.cos(angle / 180 * Math.PI));
+        int newY = (int) (getPosition().getY() + speed * Math.sin(angle / 180 * Math.PI));
+        if (getContext().isPassablePlace(newX, newY)) {
+            getPosition().setX(newX);
+            getPosition().setY(newY);
+        }
     }
+
 
     public double getSpeed() {
         return speed;

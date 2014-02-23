@@ -7,19 +7,17 @@ import com.krld.manager.game.Game;
  */
 public abstract class Unit {
 
-    private static final int MAX_HP = 100;
+    public static final int MAX_HP = 100;
     private final Game context;
     private Point position;
     private int id;
     private int hp;
-    private boolean alive;
 
     public Unit(int x, int y, Game game) {
         this.context = game;
         id = game.getNextId();
         position = new Point(x, y);
         hp = MAX_HP;
-        alive = true;
 
     }
 
@@ -50,16 +48,18 @@ public abstract class Unit {
         if (hp < 0) {
             hp = 0;
         }
-        if (hp == 0) {
-            setAlive(false);
-        }
     }
 
-    public void setAlive(boolean alive) {
-        this.alive = alive;
-    }
 
     public boolean isAlive() {
-        return alive;
+        return hp > 0;
+    }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
     }
 }
