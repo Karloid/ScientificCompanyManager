@@ -33,7 +33,22 @@ public abstract class AbstractBullet extends Unit {
         if (collideWithPlayers()) {
             return;
         }
-        checkIsDead();
+        if (collideWithPlayers()) {
+            return;
+        }
+        if (
+                checkCollideWithObjects()) {
+            return;
+        }
+        checkIsInTarget();
+    }
+
+    private boolean checkCollideWithObjects() {
+        if (!getContext().isPassablePlace(getPosition().getX(), getPosition().getY())) {
+            setDead(true);
+            return true;
+        }
+        return false;
     }
 
     private boolean collideWithPlayers() {
@@ -55,7 +70,7 @@ public abstract class AbstractBullet extends Unit {
 
     abstract int getDamage();
 
-    private void checkIsDead() {
+    private void checkIsInTarget() {
       /*  if (Utils.getDistanceTo(getPosition().getX(), getPosition().getY(), targetX, targetY) <= DEAD_DISTANCE) {
             System.out.println("bullet is dead!");
             setDead(true);

@@ -140,7 +140,8 @@ public class Game {
     private void initTiles() {
         mapManager = new MapManager();
      //   tiles = mapManager.getRandomizeTiles(WIDTH, HEIGHT);
-        tiles = mapManager.loadMapFromFile("mapHouses.json");
+      //  tiles = mapManager.loadMapFromFile("mapHouses.json");
+        tiles = mapManager.loadMapFromFile("mapHouseDoor.json");
         analyzeTiles();
 
     }
