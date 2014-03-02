@@ -17,9 +17,13 @@ public abstract class ActiveUnit extends Unit {
     }
 
     public void update() {
-        if (isAlive())
+        if (isAlive()) {
+            applyAction();
             move();
+        }
     }
+
+    protected abstract void applyAction();
 
     private void move() {
         if (!isMoveDown() && !isMoveLeft() && !isMoveRight() && !isMoveUp()) {

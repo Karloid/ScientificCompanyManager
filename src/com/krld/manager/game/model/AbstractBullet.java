@@ -44,7 +44,7 @@ public abstract class AbstractBullet extends Unit {
     }
 
     private boolean checkCollideWithObjects() {
-        if (!getContext().isPassablePlace(getPosition().getX(), getPosition().getY())) {
+        if (!getContext().isPenetrablePlace(getPosition().getX(), getPosition().getY())) {
             setDead(true);
             return true;
         }

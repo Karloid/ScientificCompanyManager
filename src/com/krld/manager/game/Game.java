@@ -19,6 +19,7 @@ public class Game {
     private int currentId = -1;
     private int[][] tiles;
     private int[][] passable;
+    private int[][] penetrable;
     private List<Player> players;
     private List<AbstractBullet> bullets;
     private long delay = 100;
@@ -48,6 +49,28 @@ public class Game {
     private void analyzeTiles() {
         initSpawns();
         initPassable();
+        initPenetrable();
+    }
+
+    private void initPenetrable() {
+        int penetrableWidth = (WIDTH * CELL_SIZE) / PASSABLE_CELL_SIZE;
+        int penetrableHeight = (HEIGHT * CELL_SIZE) / PASSABLE_CELL_SIZE;
+        penetrable = new int[penetrableWidth][penetrableHeight];
+        for (int x = 0; x < penetrableWidth; x++) {
+            for (int y = 0; y < penetrableHeight; y++) {
+                penetrable[x][y] = 1;
+            }
+        }
+
+        for (int x = 0; x < WIDTH; x++) {
+            for (int y = 0; y < HEIGHT; y++) {
+                if (mapManager.haveTag(tiles[x][y], "IMPENETRABLE")) {
+                    for (int xx = 0; xx < CELL_SIZE / PASSABLE_CELL_SIZE; xx++)
+                        for (int yy = 0; yy < CELL_SIZE / PASSABLE_CELL_SIZE; yy++)
+                            penetrable[(x * CELL_SIZE) / PASSABLE_CELL_SIZE + xx][(y * CELL_SIZE) / PASSABLE_CELL_SIZE + yy] = 0;
+                }
+            }
+        }
     }
 
     private void initPassable() {
@@ -139,9 +162,10 @@ public class Game {
 
     private void initTiles() {
         mapManager = new MapManager();
-     //   tiles = mapManager.getRandomizeTiles(WIDTH, HEIGHT);
-      //  tiles = mapManager.loadMapFromFile("mapHouses.json");
-        tiles = mapManager.loadMapFromFile("mapHouseDoor.json");
+        //   tiles = mapManager.getRandomizeTiles(WIDTH, HEIGHT);
+        //  tiles = mapManager.loadMapFromFile("mapHouses.json");
+        // tiles = mapManager.loadMapFromFile("mapHouseDoor.json");
+        tiles = mapManager.loadMapFromFile("water_house_test.json");
         analyzeTiles();
 
     }
@@ -216,8 +240,8 @@ public class Game {
     }
 
     public boolean inPassableFrame(int passableX, int passableY) {
-        if (passableX >= 0 && passableX <= (WIDTH * CELL_SIZE) / PASSABLE_CELL_SIZE
-                && passableY >= 0 && passableY <= (HEIGHT * CELL_SIZE) / PASSABLE_CELL_SIZE) {
+        if (passableX >= 0 && passable.length > passableX
+                && passableY >= 0 && passableY <= passable[0].length) {
             return true;
         }
         return false;
@@ -231,6 +255,28 @@ public class Game {
             return false;
         }
         int value = passable[passableX][passableY];
+        if (value == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    public int[][] getPenetrable() {
+        return penetrable;
+    }
+
+    public void setPenetrable(int[][] penetrable) {
+        this.penetrable = penetrable;
+    }
+
+    public boolean isPenetrablePlace(int x, int y) {
+        int[][] passable = getPassable();
+        int penetrableX = x / Game.PASSABLE_CELL_SIZE;
+        int penetrableY = y / Game.PASSABLE_CELL_SIZE;
+        if (!inPassableFrame(penetrableX, penetrableY)) {
+            return false;
+        }
+        int value = penetrable[penetrableX][penetrableY];
         if (value == 1) {
             return true;
         }
