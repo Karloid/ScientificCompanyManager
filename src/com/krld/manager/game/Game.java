@@ -1,6 +1,6 @@
 package com.krld.manager.game;
 
-import com.krld.manager.game.model.AbstractBullet;
+import com.krld.manager.game.model.guns.AbstractBullet;
 import com.krld.manager.game.model.ActiveUnit;
 import com.krld.manager.game.model.Player;
 import com.krld.manager.game.model.Unit;
