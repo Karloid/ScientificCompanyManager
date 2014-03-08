@@ -13,9 +13,6 @@ public class Ak47 extends Gun {
     public Ak47() {
         shootBehavior = new Ak47ShootBehavior();
         addBullets(START_BULLETS_COUNT);
-
     }
-
-
 
 }
