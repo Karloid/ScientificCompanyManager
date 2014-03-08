@@ -165,7 +165,8 @@ public class Game {
         //   tiles = mapManager.getRandomizeTiles(WIDTH, HEIGHT);
         //  tiles = mapManager.loadMapFromFile("mapHouses.json");
         // tiles = mapManager.loadMapFromFile("mapHouseDoor.json");
-        tiles = mapManager.loadMapFromFile("water_house_test.json");
+        //tiles = mapManager.loadMapFromFile("water_house_test.json");
+        tiles = mapManager.loadMapFromFile("river.json");
         analyzeTiles();
 
     }
