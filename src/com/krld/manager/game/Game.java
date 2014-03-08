@@ -4,6 +4,7 @@ import com.krld.manager.game.model.guns.AbstractBullet;
 import com.krld.manager.game.model.ActiveUnit;
 import com.krld.manager.game.model.Player;
 import com.krld.manager.game.model.Unit;
+import com.krld.manager.game.model.guns.Ak47;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,7 @@ public class Game {
     private double speedRatio = delay / 300f;
     private List<Spawn> spawns;
     private MapManager mapManager;
+    private List<ItemSpawn> itemSpawns;
 
     public double getSpeedRatio() {
         return speedRatio;
@@ -50,6 +52,19 @@ public class Game {
         initSpawns();
         initPassable();
         initPenetrable();
+        initWeaponSpawn();
+    }
+
+    private void initWeaponSpawn() {
+        itemSpawns = new ArrayList<ItemSpawn>();
+
+        for (int x = 0; x < WIDTH; x++) {
+            for (int y = 0; y < HEIGHT; y++) {
+                if (tiles[x][y] == mapManager.getTileTypeByName("WEAPON_SPAWN_AK47_GRASS1").getId()) {
+                    itemSpawns.add(new ItemSpawn((x * CELL_SIZE) + CELL_SIZE / 2, (y * CELL_SIZE) + CELL_SIZE / 2, this, Ak47.class));
+                }
+            }
+        }
     }
 
     private void initPenetrable() {
