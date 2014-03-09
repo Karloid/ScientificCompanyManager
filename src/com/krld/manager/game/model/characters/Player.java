@@ -1,9 +1,9 @@
-package com.krld.manager.game.model;
+package com.krld.manager.game.model.characters;
 
 import com.krld.manager.game.Game;
-import com.krld.manager.game.model.guns.Ak47;
-import com.krld.manager.game.model.guns.Gun;
-import com.krld.manager.game.model.guns.PistolGun;
+import com.krld.manager.game.Utils;
+import com.krld.manager.game.model.Point;
+import com.krld.manager.game.model.items.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +15,7 @@ public class Player extends ActiveUnit {
 
     public static final int SPEED = 10;
     private static final long STANDART_COOLDOWN = 400;
+    private static final int PICK_UP_DISTANCE = 32;
     private final List<Gun> guns;
     private int spriteId;
     private long lastTimeShot;
@@ -33,6 +34,51 @@ public class Player extends ActiveUnit {
         guns.add(new Ak47());
         gun = guns.get(1);
 
+    }
+
+    @Override
+    void pickUpNearby() {
+        List<ItemContainer> itemsContainer = getContext().getItemsContainer();
+        ArrayList<ItemContainer> itemsContainersToRemove = null;
+        for (ItemContainer itemContainer : itemsContainer) {
+            if (Utils.getDistanceTo(getPosition().getX(), getPosition().getY(), itemContainer.getPosition().getX(),
+                    itemContainer.getPosition().getY()) < PICK_UP_DISTANCE) {
+                MyItem item = itemContainer.getItem();
+                if (item instanceof Gun) {
+                    Gun tmpGun = (Gun) item;
+                    if (gunAlreadyStored(tmpGun)) {
+                        getGunByName(tmpGun.getName()).addBullets(tmpGun.getBulletsCount());
+                    } else {
+                        guns.add(tmpGun);
+                    }
+                }
+                if (itemsContainersToRemove == null) {
+                    itemsContainersToRemove = new ArrayList<ItemContainer>();
+                }
+                itemsContainersToRemove.add(itemContainer);
+            }
+        }
+        if (itemsContainersToRemove != null) {
+            itemsContainer.removeAll(itemsContainersToRemove);
+        }
+    }
+
+    private Gun getGunByName(String name) {
+        for (Gun gun : guns) {
+            if (gun.getName().equals(name)) {
+                return gun;
+            }
+        }
+        return null;
+    }
+
+    private boolean gunAlreadyStored(Gun gunToFind) {
+        for (Gun gun : guns) {
+            if (gun.getName().equals(gunToFind.getName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -71,8 +117,8 @@ public class Player extends ActiveUnit {
     }
 
     private void shootTo(int x, int y) {
-            setAction(ActionType.SHOOT);
-            setActionPosition(new Point(x, y));
+        setAction(ActionType.SHOOT);
+        setActionPosition(new Point(x, y));
     }
 
     private boolean readyToSoot() {
@@ -118,5 +164,15 @@ public class Player extends ActiveUnit {
 
     public Gun getGun() {
         return gun;
+    }
+
+    public List<Gun> getGuns() {
+        return guns;
+    }
+
+    public void changeGunByIndex(int i) {
+        if (guns.get(i) != null) {
+            gun = guns.get(i);
+        }
     }
 }

@@ -1,10 +1,10 @@
 package com.krld.manager.game;
 
-import com.krld.manager.game.model.guns.AbstractBullet;
-import com.krld.manager.game.model.ActiveUnit;
-import com.krld.manager.game.model.Player;
-import com.krld.manager.game.model.Unit;
-import com.krld.manager.game.model.guns.Ak47;
+import com.krld.manager.game.model.characters.Spawn;
+import com.krld.manager.game.model.items.*;
+import com.krld.manager.game.model.characters.ActiveUnit;
+import com.krld.manager.game.model.characters.Player;
+import com.krld.manager.game.model.characters.Unit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,16 +28,20 @@ public class Game {
     private List<Spawn> spawns;
     private MapManager mapManager;
     private List<ItemSpawn> itemSpawns;
+    private MapAnalyzator mapAnalyzator;
+    private List<ItemContainer> itemsContainers;
 
     public double getSpeedRatio() {
         return speedRatio;
     }
 
     public Game() {
-        initTiles();
-
         players = new ArrayList<Player>();
         bullets = new ArrayList<AbstractBullet>();
+        itemsContainers = new ArrayList<ItemContainer>();
+
+        initTiles();
+
 
         new Thread(new Runnable() {
             @Override
@@ -48,79 +52,6 @@ public class Game {
 
     }
 
-    private void analyzeTiles() {
-        initSpawns();
-        initPassable();
-        initPenetrable();
-        initWeaponSpawn();
-    }
-
-    private void initWeaponSpawn() {
-        itemSpawns = new ArrayList<ItemSpawn>();
-
-        for (int x = 0; x < WIDTH; x++) {
-            for (int y = 0; y < HEIGHT; y++) {
-                if (tiles[x][y] == mapManager.getTileTypeByName("WEAPON_SPAWN_AK47_GRASS1").getId()) {
-                    itemSpawns.add(new ItemSpawn((x * CELL_SIZE) + CELL_SIZE / 2, (y * CELL_SIZE) + CELL_SIZE / 2, this, Ak47.class));
-                }
-            }
-        }
-    }
-
-    private void initPenetrable() {
-        int penetrableWidth = (WIDTH * CELL_SIZE) / PASSABLE_CELL_SIZE;
-        int penetrableHeight = (HEIGHT * CELL_SIZE) / PASSABLE_CELL_SIZE;
-        penetrable = new int[penetrableWidth][penetrableHeight];
-        for (int x = 0; x < penetrableWidth; x++) {
-            for (int y = 0; y < penetrableHeight; y++) {
-                penetrable[x][y] = 1;
-            }
-        }
-
-        for (int x = 0; x < WIDTH; x++) {
-            for (int y = 0; y < HEIGHT; y++) {
-                if (mapManager.haveTag(tiles[x][y], "IMPENETRABLE")) {
-                    for (int xx = 0; xx < CELL_SIZE / PASSABLE_CELL_SIZE; xx++)
-                        for (int yy = 0; yy < CELL_SIZE / PASSABLE_CELL_SIZE; yy++)
-                            penetrable[(x * CELL_SIZE) / PASSABLE_CELL_SIZE + xx][(y * CELL_SIZE) / PASSABLE_CELL_SIZE + yy] = 0;
-                }
-            }
-        }
-    }
-
-    private void initPassable() {
-        int passableWidth = (WIDTH * CELL_SIZE) / PASSABLE_CELL_SIZE;
-        int passableHeight = (HEIGHT * CELL_SIZE) / PASSABLE_CELL_SIZE;
-        passable = new int[passableWidth][passableHeight];
-        for (int x = 0; x < passableWidth; x++) {
-            for (int y = 0; y < passableHeight; y++) {
-                passable[x][y] = 1;
-            }
-        }
-
-        for (int x = 0; x < WIDTH; x++) {
-            for (int y = 0; y < HEIGHT; y++) {
-                if (mapManager.haveTag(tiles[x][y], "IMPASSABLE")) {
-                    for (int xx = 0; xx < CELL_SIZE / PASSABLE_CELL_SIZE; xx++)
-                        for (int yy = 0; yy < CELL_SIZE / PASSABLE_CELL_SIZE; yy++)
-                            passable[(x * CELL_SIZE) / PASSABLE_CELL_SIZE + xx][(y * CELL_SIZE) / PASSABLE_CELL_SIZE + yy] = 0;
-                }
-            }
-        }
-
-    }
-
-    private void initSpawns() {
-        spawns = new ArrayList<Spawn>();
-
-        for (int x = 0; x < WIDTH; x++) {
-            for (int y = 0; y < HEIGHT; y++) {
-                if (tiles[x][y] == mapManager.getTileTypeByName("SPAWN1").getId()) {
-                    spawns.add(new Spawn((x * CELL_SIZE) + CELL_SIZE / 2, (y * CELL_SIZE) + CELL_SIZE / 2, this));
-                }
-            }
-        }
-    }
 
     private void runGameLoop() {
         while (true) {
@@ -182,7 +113,9 @@ public class Game {
         // tiles = mapManager.loadMapFromFile("mapHouseDoor.json");
         //tiles = mapManager.loadMapFromFile("water_house_test.json");
         tiles = mapManager.loadMapFromFile("river.json");
-        analyzeTiles();
+        mapAnalyzator = new MapAnalyzator();
+        mapAnalyzator.analyzeTiles();
+
 
     }
 
@@ -257,7 +190,7 @@ public class Game {
 
     public boolean inPassableFrame(int passableX, int passableY) {
         if (passableX >= 0 && passable.length > passableX
-                && passableY >= 0 && passableY <= passable[0].length) {
+                && passableY >= 0 && passableY < passable[0].length) {
             return true;
         }
         return false;
@@ -297,5 +230,91 @@ public class Game {
             return true;
         }
         return false;
+    }
+
+    public void addNewItemContainer(ItemContainer itemToSpawn) {
+        itemsContainers.add(itemToSpawn);
+    }
+
+    public List<ItemContainer> getItemsContainer() {
+        return itemsContainers;
+    }
+
+    private class MapAnalyzator {
+        private void analyzeTiles() {
+            initSpawns();
+            initPassable();
+            initPenetrable();
+            initWeaponSpawn();
+        }
+
+        private void initWeaponSpawn() {
+            itemSpawns = new ArrayList<ItemSpawn>();
+
+            for (int x = 0; x < WIDTH; x++) {
+                for (int y = 0; y < HEIGHT; y++) {
+                    int ak47SpriteId = mapManager.getTileTypeByName("WEAPON_SPAWN_AK47_GRASS1").getId();
+                    if (tiles[x][y] == ak47SpriteId) {
+                        itemSpawns.add(new ItemSpawn((x * CELL_SIZE) + CELL_SIZE / 2, (y * CELL_SIZE) + CELL_SIZE / 2, Game.this,
+                                new ItemContainer(Game.this, new Ak47(), mapManager.getTileTypeByName("AK47").getId(), 0, 0)));
+                    }
+                }
+            }
+        }
+
+        private void initPenetrable() {
+            int penetrableWidth = (WIDTH * CELL_SIZE) / PASSABLE_CELL_SIZE;
+            int penetrableHeight = (HEIGHT * CELL_SIZE) / PASSABLE_CELL_SIZE;
+            penetrable = new int[penetrableWidth][penetrableHeight];
+            for (int x = 0; x < penetrableWidth; x++) {
+                for (int y = 0; y < penetrableHeight; y++) {
+                    penetrable[x][y] = 1;
+                }
+            }
+
+            for (int x = 0; x < WIDTH; x++) {
+                for (int y = 0; y < HEIGHT; y++) {
+                    if (mapManager.haveTag(tiles[x][y], "IMPENETRABLE")) {
+                        for (int xx = 0; xx < CELL_SIZE / PASSABLE_CELL_SIZE; xx++)
+                            for (int yy = 0; yy < CELL_SIZE / PASSABLE_CELL_SIZE; yy++)
+                                penetrable[(x * CELL_SIZE) / PASSABLE_CELL_SIZE + xx][(y * CELL_SIZE) / PASSABLE_CELL_SIZE + yy] = 0;
+                    }
+                }
+            }
+        }
+
+        private void initPassable() {
+            int passableWidth = (WIDTH * CELL_SIZE) / PASSABLE_CELL_SIZE;
+            int passableHeight = (HEIGHT * CELL_SIZE) / PASSABLE_CELL_SIZE;
+            passable = new int[passableWidth][passableHeight];
+            for (int x = 0; x < passableWidth; x++) {
+                for (int y = 0; y < passableHeight; y++) {
+                    passable[x][y] = 1;
+                }
+            }
+
+            for (int x = 0; x < WIDTH; x++) {
+                for (int y = 0; y < HEIGHT; y++) {
+                    if (mapManager.haveTag(tiles[x][y], "IMPASSABLE")) {
+                        for (int xx = 0; xx < CELL_SIZE / PASSABLE_CELL_SIZE; xx++)
+                            for (int yy = 0; yy < CELL_SIZE / PASSABLE_CELL_SIZE; yy++)
+                                passable[(x * CELL_SIZE) / PASSABLE_CELL_SIZE + xx][(y * CELL_SIZE) / PASSABLE_CELL_SIZE + yy] = 0;
+                    }
+                }
+            }
+
+        }
+
+        private void initSpawns() {
+            spawns = new ArrayList<Spawn>();
+
+            for (int x = 0; x < WIDTH; x++) {
+                for (int y = 0; y < HEIGHT; y++) {
+                    if (tiles[x][y] == mapManager.getTileTypeByName("SPAWN1").getId()) {
+                        spawns.add(new Spawn((x * CELL_SIZE) + CELL_SIZE / 2, (y * CELL_SIZE) + CELL_SIZE / 2, Game.this));
+                    }
+                }
+            }
+        }
     }
 }

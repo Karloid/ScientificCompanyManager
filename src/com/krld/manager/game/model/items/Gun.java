@@ -1,11 +1,11 @@
-package com.krld.manager.game.model.guns;
+package com.krld.manager.game.model.items;
 
-import com.krld.manager.game.model.Player;
+import com.krld.manager.game.model.characters.Player;
 
 /**
  * Created by Andrey on 3/8/14.
  */
-public abstract class Gun {
+public abstract class Gun extends MyItem {
     protected ShootBehavior shootBehavior;
     private int bulletsCount;
 
@@ -28,4 +28,10 @@ public abstract class Gun {
     public void addBullets(int count) {
         bulletsCount += count;
     }
+
+    public int getBulletsCount() {
+        return bulletsCount;
+    }
+
+    public abstract String getName();
 }

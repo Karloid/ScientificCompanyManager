@@ -1,7 +1,6 @@
-package com.krld.manager.game.model.guns;
+package com.krld.manager.game.model.items;
 
-import com.krld.manager.game.Game;
-import com.krld.manager.game.model.Player;
+import com.krld.manager.game.model.characters.Player;
 
 /**
  * Created by Andrey on 3/8/14.
@@ -13,4 +12,5 @@ public interface ShootBehavior {
 
     long getCooldownTime();
     void setCooldownTime(long cooldownTime);
+    int getThreshold();
 }

@@ -1,9 +1,9 @@
-package com.krld.manager.game.model.guns;
+package com.krld.manager.game.model.items;
 
 import com.krld.manager.game.Game;
 import com.krld.manager.game.Utils;
-import com.krld.manager.game.model.Player;
-import com.krld.manager.game.model.Unit;
+import com.krld.manager.game.model.characters.Player;
+import com.krld.manager.game.model.characters.Unit;
 
 /**
  * Created by Andrey on 2/16/14.

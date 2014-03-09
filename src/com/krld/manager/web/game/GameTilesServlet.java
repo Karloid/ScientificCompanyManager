@@ -3,7 +3,7 @@ package com.krld.manager.web.game;
 import com.google.gson.Gson;
 import com.krld.manager.game.Game;
 import com.krld.manager.game.Utils;
-import com.krld.manager.game.model.Player;
+import com.krld.manager.game.model.characters.Player;
 import com.krld.manager.web.WebServer;
 
 import javax.servlet.ServletException;

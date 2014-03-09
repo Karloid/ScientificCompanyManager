@@ -16,14 +16,18 @@ renderer.view.onmousedown = function (e) {
     actionY = (e.y - renderer.view.offsetTop);
 };
 
-var keyEnum = { W_Key: 0, A_Key: 1, S_Key: 2, D_Key: 3 };
-var keyArray = new Array(4);
-var keyArrayLastSended = new Array(4);
+var keyEnum = { W_Key: 0, A_Key: 1, S_Key: 2, D_Key: 3, ONE_Key : 4,  TWO_Key : 5, THREE_Key : 6, FOUR_Key : 7};
+var keyArray = new Array(8);
+var keyArrayLastSended = new Array(8);
 
 keyArray[0] = false;
 keyArray[1] = false;
 keyArray[2] = false;
 keyArray[3] = false;
+keyArray[4] = false;
+keyArray[5] = false;
+keyArray[6] = false;
+keyArray[7] = false;
 
 document.onkeydown = function onKeyDown(e) {
     tmpkey = String.fromCharCode(e.keyCode);
@@ -35,6 +39,14 @@ document.onkeydown = function onKeyDown(e) {
         keyArray[keyEnum.S_Key] = true;
     if (tmpkey == 'D')
         keyArray[keyEnum.D_Key] = true;
+    if (tmpkey == '1')
+        keyArray[keyEnum.ONE_Key] = true;
+    if (tmpkey == '2')
+        keyArray[keyEnum.TWO_Key] = true;
+    if (tmpkey == '3')
+        keyArray[keyEnum.THREE_Key] = true;
+    if (tmpkey == '4')
+        keyArray[keyEnum.FOUR_Key] = true;
     //  httpPost("/game/action", tmpkey + " is down");
 }
 
@@ -49,13 +61,23 @@ document.onkeyup = function onKeyUp(e) {
         keyArray[keyEnum.S_Key] = false;
     if (tmpkey == 'D')
         keyArray[keyEnum.D_Key] = false;
+    if (tmpkey == '1')
+        keyArray[keyEnum.ONE_Key] = false;
+    if (tmpkey == '2')
+        keyArray[keyEnum.TWO_Key] = false;
+    if (tmpkey == '3')
+        keyArray[keyEnum.THREE_Key] = false;
+    if (tmpkey == '4')
+        keyArray[keyEnum.FOUR_Key] = false;
 
     //httpPost("/game/action", tmpkey + " is up");
 }
 
 
 // add the renderer view element to the DOM
-document.getElementById("container").appendChild(renderer.view);
+document.getElementById("gameview").appendChild(renderer.view);
+var bulletsAndGun = document.getElementById("bulletsAndGun");
+var listGuns = document.getElementById("listGuns");
 
 //renderer.view.addEventListener("mousedown", function() {});
 
@@ -93,6 +115,7 @@ var DELAY = 300;
 var TILES_TYPES;
 
 var BULLETS = [];
+var ITEMS_CONTAINERS = [];
 
 loadGroundTiles(container);
 
@@ -113,7 +136,7 @@ stage.onTouchMove = function (touchData) {
 }
 
 function arrayEquals(keyArray, keyArrayLastSended) {
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < 8; i++) {
         if (keyArray[i] != keyArrayLastSended[i]) {
             return false;
         }
@@ -128,12 +151,21 @@ function handleUserInput() {
             ", \"s\" : " + isKeyDown(keyEnum.S_Key) +
             ", \"d\" : " + isKeyDown(keyEnum.D_Key) +
 
+            ", \"1\" : " + isKeyDown(keyEnum.ONE_Key) +
+            ", \"2\" : " + isKeyDown(keyEnum.TWO_Key) +
+            ", \"3\" : " + isKeyDown(keyEnum.THREE_Key) +
+            ", \"4\" : " + isKeyDown(keyEnum.FOUR_Key) +
+
             "}"
         httpPost("/game/keyAction", request);
         keyArrayLastSended[0] = keyArray[0];
         keyArrayLastSended[1] = keyArray[1];
         keyArrayLastSended[2] = keyArray[2];
         keyArrayLastSended[3] = keyArray[3];
+        keyArrayLastSended[4] = keyArray[4];
+        keyArrayLastSended[5] = keyArray[5];
+        keyArrayLastSended[6] = keyArray[6];
+        keyArrayLastSended[7] = keyArray[7];
     }
     if (actionX != -1 && actionY != -1) {
         var request = "{ \"x\" : " + actionX +
@@ -224,6 +256,42 @@ function updatePlayer(player, x, y, hp) {
 
 
 }
+function removeOldItemsContainers() {
+    for (var i = ITEMS_CONTAINERS.length - 1; i >= 0; i--) {
+        if (ITEMS_CONTAINERS[i] && !ITEMS_CONTAINERS[i].updated) {
+            container.removeChild(ITEMS_CONTAINERS[i].sprite);
+            ITEMS_CONTAINERS.splice(i, 1);
+        }
+    }
+
+    for (var i = ITEMS_CONTAINERS.length - 1; i >= 0; i--) {
+        if (ITEMS_CONTAINERS[i]) {
+            ITEMS_CONTAINERS[i].updated = false;
+        }
+    }
+}
+
+
+function getItemContainer(itemContainerParam) {
+
+    var itemContainer = ITEMS_CONTAINERS[itemContainerParam.id];
+    if (!itemContainer) {
+        itemContainer = {
+            id: itemContainerParam.id,
+            sprite: new PIXI.Sprite(getTileTextureById(itemContainerParam.spriteId)),
+            updated: false
+        };
+        itemContainer.sprite.anchor.x = 0.5;
+        itemContainer.sprite.anchor.y = 0.5;
+        ITEMS_CONTAINERS[itemContainerParam.id] = itemContainer;
+
+        container.addChild(itemContainer.sprite);
+
+    }
+    return itemContainer;
+}
+
+
 function getWorldState() {
     var currentDate = new Date().getTime();
     if (currentDate - lastUpdateDate < DELAY) {
@@ -239,6 +307,16 @@ function getWorldState() {
     }
 
 
+    for (jj = 0; jj < obj.itemsContainers.length; jj++) {
+        tmpItemContainer = getItemContainer(obj.itemsContainers[jj]);
+        tmpItemContainer.sprite.position.x = obj.itemsContainers[jj].x;
+        tmpItemContainer.sprite.position.y = obj.itemsContainers[jj].y;
+
+        tmpItemContainer.updated = true;
+    }
+
+    removeOldItemsContainers();
+
     for (i = 0; i < obj.bullets.length; i++) {
         bullet = getBullet(obj.bullets[i].id);
         bullet.sprite.position.x = obj.bullets[i].x;
@@ -247,6 +325,15 @@ function getWorldState() {
     }
 
     removeOldBullets();
+
+
+    // update HUD
+    bulletsAndGun.textContent = obj.playerBullets + ' ' + obj.playerGun;
+    listGuns.textContent = '';
+    for (i = 0; i < obj.playerGuns.length; i++) {
+        listGuns.textContent = listGuns.textContent + " " + (i+1) + ". " + obj.playerGuns[i];
+    }
+
 
 
 }

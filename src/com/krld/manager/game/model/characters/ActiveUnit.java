@@ -1,6 +1,11 @@
-package com.krld.manager.game.model;
+package com.krld.manager.game.model.characters;
 
 import com.krld.manager.game.Game;
+import com.krld.manager.game.Utils;
+import com.krld.manager.game.model.items.Ak47;
+import com.krld.manager.game.model.items.ItemContainer;
+
+import java.util.List;
 
 /**
  * Created by Andrey on 2/15/14.
@@ -18,10 +23,13 @@ public abstract class ActiveUnit extends Unit {
 
     public void update() {
         if (isAlive()) {
+            pickUpNearby();
             applyAction();
             move();
         }
     }
+
+    abstract void pickUpNearby();
 
     protected abstract void applyAction();
 

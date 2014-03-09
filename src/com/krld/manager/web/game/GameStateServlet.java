@@ -2,8 +2,10 @@ package com.krld.manager.web.game;
 
 import com.google.gson.Gson;
 import com.krld.manager.game.Game;
-import com.krld.manager.game.model.guns.AbstractBullet;
-import com.krld.manager.game.model.Player;
+import com.krld.manager.game.model.items.AbstractBullet;
+import com.krld.manager.game.model.characters.Player;
+import com.krld.manager.game.model.items.Gun;
+import com.krld.manager.game.model.items.ItemContainer;
 import com.krld.manager.web.WebServer;
 
 import javax.servlet.ServletException;
@@ -24,6 +26,9 @@ public class GameStateServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Game game = WebServer.getGame();
         // req.getSession().setAttribute("playerId", newPlayer.getId());
+        Integer playerId = (Integer) req.getSession().getAttribute("playerId");
+        Player currentPlayer = game.getPlayerById(playerId);
+
         List<Player> players = game.getPlayers();
         Gson gson = new Gson();
         PrintWriter writer = resp.getWriter();
@@ -47,7 +52,26 @@ public class GameStateServlet extends HttpServlet {
             bulletsList.add(bulletMap);
         }
 
+        List<Object> itemsContainerList = new ArrayList<>();
+        for (ItemContainer itemContainer : game.getItemsContainer()) {
+            HashMap<String, Object> itemsContainersMap = new HashMap<>();
+            itemsContainersMap.put("id", itemContainer.getId());
+            itemsContainersMap.put("x", itemContainer.getPosition().getX());
+            itemsContainersMap.put("y", itemContainer.getPosition().getY());
+            itemsContainersMap.put("spriteId", itemContainer.getSpriteId());
+            itemsContainerList.add(itemsContainersMap);
+        }
+
+        List<String> playerGunsList = new ArrayList<String>();
+        for (Gun gun : currentPlayer.getGuns()) {
+            playerGunsList.add(gun.getName());
+        }
         writer.println(" {  \"players\" : " + gson.toJson(playersList) +
-                ", \"bullets\" :" + gson.toJson(bulletsList) + '}');
+                ", \"bullets\" :" + gson.toJson(bulletsList) +
+                ", \"itemsContainers\" :" + gson.toJson(itemsContainerList) +
+                ", \"playerGuns\" :" + gson.toJson(playerGunsList) +
+                ", \"playerBullets\" :" + gson.toJson(currentPlayer.getGun().getBulletsCount()) +
+                ", \"playerGun\" :" + gson.toJson(currentPlayer.getGun().getName()) +
+                '}');
     }
 }

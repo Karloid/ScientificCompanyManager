@@ -1,6 +1,7 @@
-package com.krld.manager.game.model;
+package com.krld.manager.game.model.characters;
 
 import com.krld.manager.game.Game;
+import com.krld.manager.game.model.Point;
 
 /**
  * Created by Andrey on 2/15/14.
