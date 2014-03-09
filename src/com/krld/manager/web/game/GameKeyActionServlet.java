@@ -21,7 +21,7 @@ public class GameKeyActionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String inputString = new BufferedReader(new InputStreamReader(req.getInputStream())).readLine();
-        System.out.println(inputString);
+      //  System.out.println(inputString);
         Game game = WebServer.getGame();
         Integer playerId = (Integer) (req.getSession().getAttribute("playerId"));
         Player player = game.getPlayerById(playerId);

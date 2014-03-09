@@ -171,8 +171,9 @@ public class Player extends ActiveUnit {
     }
 
     public void changeGunByIndex(int i) {
-        if (guns.get(i) != null) {
-            gun = guns.get(i);
+        if (i >= guns.size()) {
+            return;
         }
+        gun = guns.get(i);
     }
 }

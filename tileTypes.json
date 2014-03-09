@@ -69,15 +69,19 @@
 
          {"id" : 60, "name" : "WALL_GRASS_WINDOW_HOR1",              "texture" : "wall_grass_window_hor1.png", "tags" :["WALL", "GRASS", "DECOR", "IMPASSABLE", "IMPENETRABLE"]},
 
-         {"id" : 61, "name" : "WEAPON_SPAWN_AK47_GRASS1",              "texture" : "weapon_spawn_ak47_grass1.png", "tags" :["WEAPON_SPAWN", "GRASS", "COMMON"]},
-
+         {"id" : 61, "name" : "ITEM_SPAWN_AK47_GRASS1",              "texture" : "item_spawn_ak47_grass1.png", "tags" :["ITEM_SPAWN", "GRASS", "COMMON", "AK47"]},
          {"id" : 62, "name" :  "GRASS_FLOWERS1", 				      "texture" : "grass_flowers1.png", "tags" :["GRASS", "DECOR"]},
+
          {"id" : 63, "name" :  "GRASS_FLOWERS2", 				      "texture" : "grass_flowers2.png", "tags" :["GRASS", "DECOR"]},
          {"id" : 64, "name" :  "GRASS_FLOWERS3", 				      "texture" : "grass_flowers3.png", "tags" :["GRASS", "DECOR"]},
          {"id" : 65, "name" :  "GRASS_FLOWERS4", 				      "texture" : "grass_flowers4.png", "tags" :["GRASS", "DECOR"]},
+         {"id" : 66, "name" :  "AK47", 				      "texture" : "ak47.png", "tags" :["ITEM","WEAPON"]},
 
-         {"id" : 66, "name" :  "AK47", 				      "texture" : "ak47.png", "tags" :["WEAPON"]},
-         {"id" : 67, "name" :  "SVD", 				      "texture" : "svd.png", "tags" :["WEAPON"]}
+         {"id" : 67, "name" :  "SVD", 				      "texture" : "svd.png", "tags" :["ITEM","WEAPON"]},
+
+         {"id" : 68, "name" : "ITEM_SPAWN_MEDKIT_GRASS1",              "texture" : "item_spawn_medkit_grass1.png", "tags" :["ITEM_SPAWN", "GRASS", "MEDKIT"]},
+         {"id" : 69, "name" : "ITEM_SPAWN_SVD_GRASS1",              "texture" : "item_spawn_svd_grass1.png", "tags" :["ITEM_SPAWN", "GRASS", "SVD"]},
+         {"id" : 70, "name" : "MEDKIT1",              "texture" : "item_spawn_medkit_grass1.png", "tags" :["ITEM", "MEDKIT"]}
      ]
     }
 

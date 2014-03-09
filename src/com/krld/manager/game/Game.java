@@ -245,19 +245,27 @@ public class Game {
             initSpawns();
             initPassable();
             initPenetrable();
-            initWeaponSpawn();
+            initItemSpawn();
         }
 
-        private void initWeaponSpawn() {
+        private void initItemSpawn() {
             itemSpawns = new ArrayList<ItemSpawn>();
 
             for (int x = 0; x < WIDTH; x++) {
                 for (int y = 0; y < HEIGHT; y++) {
-                    int ak47SpriteId = mapManager.getTileTypeByName("WEAPON_SPAWN_AK47_GRASS1").getId();
-                    if (tiles[x][y] == ak47SpriteId) {
+
+                    if (tiles[x][y] == mapManager.getTileTypeByName("ITEM_SPAWN_AK47_GRASS1").getId()) {
                         itemSpawns.add(new ItemSpawn((x * CELL_SIZE) + CELL_SIZE / 2, (y * CELL_SIZE) + CELL_SIZE / 2, Game.this,
                                 new ItemContainer(Game.this, new Ak47(), mapManager.getTileTypeByName("AK47").getId(), 0, 0)));
+                        continue;
                     }
+
+                    if (tiles[x][y] == mapManager.getTileTypeByName("ITEM_SPAWN_SVD_GRASS1").getId()) {
+                        itemSpawns.add(new ItemSpawn((x * CELL_SIZE) + CELL_SIZE / 2, (y * CELL_SIZE) + CELL_SIZE / 2, Game.this,
+                                new ItemContainer(Game.this, new Svd(), mapManager.getTileTypeByName("SVD").getId(), 0, 0)));
+                        continue;
+                    }
+
                 }
             }
         }
