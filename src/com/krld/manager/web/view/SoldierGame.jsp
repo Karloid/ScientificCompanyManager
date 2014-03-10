@@ -8,8 +8,10 @@
     <jsp:attribute name="head"><script src="js/pixi.dev.js"></script></jsp:attribute>
     <jsp:body>
         <div id="gameview"></div>
-        <div id="bulletsAndGun"></div>
+        <div id="bulletsAndGun" style="background-color: lightcyan"></div>
         <div id="listGuns"></div>
+        <div id="statsFooter" style="margin-top: 10px;"><ul><li>Name - Kills - Deaths </li></ul></div>
+        <div id="stats" style=" color: lightseagreen"></div>
         <script src="game/js/SoldierGame.js">
         </script>
     </jsp:body>

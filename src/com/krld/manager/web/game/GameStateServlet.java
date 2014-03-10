@@ -27,6 +27,7 @@ public class GameStateServlet extends HttpServlet {
         Game game = WebServer.getGame();
         // req.getSession().setAttribute("playerId", newPlayer.getId());
         Integer playerId = (Integer) req.getSession().getAttribute("playerId");
+
         Player currentPlayer = game.getPlayerById(playerId);
 
         List<Player> players = game.getPlayers();
@@ -40,6 +41,9 @@ public class GameStateServlet extends HttpServlet {
             playerMap.put("x", player.getPosition().getX());
             playerMap.put("y", player.getPosition().getY());
             playerMap.put("spriteId", player.getSpriteId());
+            playerMap.put("name", player.getName());
+            playerMap.put("k", player.getKillCount());
+            playerMap.put("d", player.getDeathCount());
             playersList.add(playerMap);
         }
 

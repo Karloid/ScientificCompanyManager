@@ -7,6 +7,7 @@ import com.krld.manager.game.model.characters.Player;
 import com.krld.manager.game.model.characters.Unit;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ public class Game {
     private int[][] penetrable;
     private List<Player> players;
     private List<AbstractBullet> bullets;
-    private long delay = 100;
+    private long delay = 70;
     private double speedRatio = delay / 300f;
     private List<Spawn> spawns;
     private MapManager mapManager;
@@ -76,6 +77,7 @@ public class Game {
             if (!player.isAlive()) {
                 spawnPlayer(player);
                 player.setHp(Unit.MAX_HP);
+                player.increaseDeathCount();
             }
         }
     }
@@ -104,6 +106,7 @@ public class Game {
         for (ActiveUnit player : players) {
             player.update();
         }
+        Collections.sort(players, Player.Comparators.KILL);
     }
 
     private void initTiles() {
@@ -145,7 +148,7 @@ public class Game {
         player.getPosition().setY(spawn.getPosition().getY());
     }
 
-    public int getNextId() {
+    public synchronized int getNextId() {
         currentId++;
         return currentId;
     }

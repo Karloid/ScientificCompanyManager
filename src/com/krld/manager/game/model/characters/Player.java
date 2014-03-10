@@ -1,11 +1,13 @@
 package com.krld.manager.game.model.characters;
 
 import com.krld.manager.game.Game;
+import com.krld.manager.game.Svd;
 import com.krld.manager.game.Utils;
 import com.krld.manager.game.model.Point;
 import com.krld.manager.game.model.items.*;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -22,6 +24,9 @@ public class Player extends ActiveUnit {
     private ActionType action;
     private Point actionPosition;
     private Gun gun;
+    private String name;
+    private int killCount;
+    private int deathCount;
 
 
     public Player(int x, int y, Game game) {
@@ -32,7 +37,11 @@ public class Player extends ActiveUnit {
         guns = new ArrayList<Gun>();
         guns.add(new PistolGun());
         guns.add(new Ak47());
+        guns.add(new Svd());
         gun = guns.get(1);
+
+        setKillCount(0);
+        setDeathCount(0);
 
     }
 
@@ -175,5 +184,55 @@ public class Player extends ActiveUnit {
             return;
         }
         gun = guns.get(i);
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getKillCount() {
+        return killCount;
+    }
+
+    public void setKillCount(int killCount) {
+        this.killCount = killCount;
+    }
+
+    public int getDeathCount() {
+        return deathCount;
+    }
+
+    public void setDeathCount(int deathCount) {
+        this.deathCount = deathCount;
+    }
+
+    public void increaseDeathCount() {
+        deathCount++;
+    }
+
+    public void increaseKillCount() {
+        killCount++;
+    }
+
+    public static class Comparators {
+        public static Comparator<Player> NAME = new Comparator<Player>() {
+
+            @Override
+            public int compare(Player o1, Player o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        };
+
+        public static Comparator<Player> KILL = new Comparator<Player>() {
+
+            @Override
+            public int compare(Player o1, Player o2) {
+                return (o1.getKillCount() == o2.getKillCount() ? 0 : (o1.getKillCount() < o2.getKillCount() ? 1 : -1 ));
+            }
+        };
     }
 }

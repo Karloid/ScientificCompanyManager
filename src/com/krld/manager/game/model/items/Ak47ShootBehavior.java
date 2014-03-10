@@ -9,7 +9,6 @@ import com.krld.manager.game.model.Point;
  */
 public class Ak47ShootBehavior extends PistolShootBehavior {
     private static final long STANDART_AK47_COOLDOWN = 100;
-    private static final int THRESHOLD = 30;
 
     public Ak47ShootBehavior() {
         super();

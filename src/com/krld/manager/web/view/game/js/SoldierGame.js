@@ -16,7 +16,7 @@ renderer.view.onmousedown = function (e) {
     actionY = (e.y - renderer.view.offsetTop);
 };
 
-var keyEnum = { W_Key: 0, A_Key: 1, S_Key: 2, D_Key: 3, ONE_Key : 4,  TWO_Key : 5, THREE_Key : 6, FOUR_Key : 7};
+var keyEnum = { W_Key: 0, A_Key: 1, S_Key: 2, D_Key: 3, ONE_Key: 4, TWO_Key: 5, THREE_Key: 6, FOUR_Key: 7};
 var keyArray = new Array(8);
 var keyArrayLastSended = new Array(8);
 
@@ -78,6 +78,7 @@ document.onkeyup = function onKeyUp(e) {
 document.getElementById("gameview").appendChild(renderer.view);
 var bulletsAndGun = document.getElementById("bulletsAndGun");
 var listGuns = document.getElementById("listGuns");
+var stats = document.getElementById("stats");
 
 //renderer.view.addEventListener("mousedown", function() {});
 
@@ -190,7 +191,7 @@ function getTexture(spriteType) {
     }
 
 }
-function getPlayer(id, spriteId) {
+function getPlayer(id, spriteId, name) {
     var soldier = soldiers[id];
     if (!soldier) {
         soldier = {
@@ -198,15 +199,20 @@ function getPlayer(id, spriteId) {
             spriteId: spriteId,
             sprite: new PIXI.Sprite(getTileTextureById(spriteId)),
             hpBar: new PIXI.Graphics(),
+            nameText: new PIXI.Text(name, {font: "13px Arial bold", fill: "blue"}),
             hp: 0
         };
         soldier.sprite.anchor.x = 0.5;
         soldier.sprite.anchor.y = 0.5;
 
+        soldier.nameText.anchor.x = 0.5;
+        soldier.nameText.anchor.y = 0.5;
+
         soldiers[id] = soldier;
 
         container.addChild(soldier.sprite);
         container.addChild(soldier.hpBar);
+        container.addChild(soldier.nameText);
 
     }
     return soldier;
@@ -245,6 +251,10 @@ function removeOldBullets() {
 function updatePlayer(player, x, y, hp) {
     player.sprite.position.x = x;
     player.sprite.position.y = y;
+
+    player.nameText.position.x = x;
+    player.nameText.position.y = y - 26;
+
     player.hp = hp;
     // return;
     container.removeChild(player.hpBar);
@@ -292,16 +302,35 @@ function getItemContainer(itemContainerParam) {
 }
 
 
+function updateHUD(obj) {
+    bulletsAndGun.textContent = obj.playerBullets + ' ' + obj.playerGun;
+    listGuns.textContent = '';
+    for (i = 0; i < obj.playerGuns.length; i++) {
+        listGuns.textContent = listGuns.textContent + " " + (i + 1) + ". " + obj.playerGuns[i];
+    }
+
+    var ul = document.createElement('ol')
+    while (stats.firstChild) {
+        stats.removeChild(stats.firstChild);
+    }
+    stats.appendChild(ul);
+    for (i = 0; i < obj.players.length; i++) {
+        var li = document.createElement('li');
+        ul.appendChild(li);
+        li.textContent +=  obj.players[i].name + " - " + obj.players[i].k + " - " + obj.players[i].d;
+    }
+//    stats.textContent += "</ul>";
+}
 function getWorldState() {
     var currentDate = new Date().getTime();
     if (currentDate - lastUpdateDate < DELAY) {
         return;
     }
     lastUpdateDate = currentDate;
-    var json = httpGet("/game/state");
+    var json = httpGet("/game/state", false);
     obj = JSON.parse(json);
     for (j = 0; j < obj.players.length; j++) {
-        player = getPlayer(obj.players[j].id, obj.players[j].spriteId);
+        player = getPlayer(obj.players[j].id, obj.players[j].spriteId, obj.players[j].name);
 
         updatePlayer(player, obj.players[j].x, obj.players[j].y, obj.players[j].hp);
     }
@@ -328,12 +357,7 @@ function getWorldState() {
 
 
     // update HUD
-    bulletsAndGun.textContent = obj.playerBullets + ' ' + obj.playerGun;
-    listGuns.textContent = '';
-    for (i = 0; i < obj.playerGuns.length; i++) {
-        listGuns.textContent = listGuns.textContent + " " + (i+1) + ". " + obj.playerGuns[i];
-    }
-
+    updateHUD(obj);
 
 
 }
@@ -361,7 +385,7 @@ function getTileTextureById(id) {
     return null;
 }
 function loadGroundTiles(container) {
-    var json = httpGet("/game/tiles");
+    var json = httpGet("/game/tiles", true);
     //  alert(json);
     obj = JSON.parse(json);
     WIDTH_WORLD = obj.width;
@@ -388,10 +412,15 @@ function loadGroundTiles(container) {
 
 }
 
-function httpGet(theUrl) {
+function httpGet(theUrl, withParams) {
     var xmlHttp = null;
 
+    //  theUrl += document.location.substring(document.location.indexOf('?'));
+    if (withParams) {
+        theUrl += document.location.search;
+    }
     xmlHttp = new XMLHttpRequest();
+//    xmlHttp.setCopen("GET", theUrl, false);
     xmlHttp.open("GET", theUrl, false);
     xmlHttp.send(null);
     return xmlHttp.responseText;

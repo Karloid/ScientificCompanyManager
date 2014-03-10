@@ -44,11 +44,13 @@ public abstract class Unit {
 
     public abstract void update();
 
-    public void takeDamage(int damage) {
+    public boolean takeDamage(int damage) {
         hp -= damage;
         if (hp < 0) {
             hp = 0;
+            return true;
         }
+        return false;
     }
 
 

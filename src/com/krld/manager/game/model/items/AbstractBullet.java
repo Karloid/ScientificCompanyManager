@@ -9,12 +9,12 @@ import com.krld.manager.game.model.characters.Unit;
  * Created by Andrey on 2/16/14.
  */
 public abstract class AbstractBullet extends Unit {
+    public static final int SPEED = 90;
     private final int targetX;
     private final int targetY;
     private final Player owner;
-    public static final int SPEED = 90;
     private static final Double DEAD_DISTANCE = Double.valueOf(SPEED);
-    private final double speed;
+    private double speed;
     private double angle;
     private boolean dead;
 
@@ -24,17 +24,19 @@ public abstract class AbstractBullet extends Unit {
         targetX = x;
         targetY = y;
         this.owner = owner;
-        this.speed = SPEED * context.getSpeedRatio();
+        setSpeed(SPEED);
         this.angle = Utils.getAngleTo(getPosition().getX(), getPosition().getY(), targetX, targetY);
 
     }
 
+    protected void setSpeed(int speed) {
+        this.speed = speed * owner.getContext().getSpeedRatio();
+    }
+
+
     @Override
     public void update() {
         updatePosition();
-        if (collideWithPlayers()) {
-            return;
-        }
         if (collideWithPlayers()) {
             return;
         }
@@ -58,10 +60,14 @@ public abstract class AbstractBullet extends Unit {
         int y = getPosition().getY();
         int delta = Game.CELL_SIZE / 2;
         for (Player player : getContext().getPlayers()) {
-            if (player != owner) {
+            if (player != owner && player.isAlive()) {
                 if (Math.abs(player.getPosition().getX() - x) <= delta &&
                         Math.abs(player.getPosition().getY() - y) <= delta) {
                     player.takeDamage(getDamage());
+
+                    if (!player.isAlive()) {
+                        owner.increaseKillCount();
+                    }
                     setDead(true);
                     return true;
                 }

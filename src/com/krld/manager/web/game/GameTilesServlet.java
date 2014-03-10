@@ -17,6 +17,8 @@ import java.io.PrintWriter;
  * Created by Andrey on 2/14/14.
  */
 public class GameTilesServlet extends HttpServlet {
+    private static final int MAX_NAME_LENGTH = 12;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("get tiles servlet!");
@@ -31,6 +33,9 @@ public class GameTilesServlet extends HttpServlet {
             newPlayer = game.getPlayerById(playerId);
             System.out.println("TILES SERVLET get player by id: " + newPlayer.getId());
         }
+        String nameFromRequest = req.getParameter("name");
+        String name = (nameFromRequest == null ? "Player_" + newPlayer.getId() : (nameFromRequest.length() > MAX_NAME_LENGTH ? nameFromRequest.substring(0, MAX_NAME_LENGTH - 1) : nameFromRequest));
+        newPlayer.setName(name);
         int[][] tiles = game.getTiles();
         Gson gson = new Gson();
         PrintWriter writer = resp.getWriter();
