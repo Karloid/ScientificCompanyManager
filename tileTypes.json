@@ -57,6 +57,7 @@
          {"id" : 50, "name" : "WALL_GRASS_T_CORNER_R1",              "texture" : "wall_grass_t_corner_r1.png", "tags" :["WALL", "GRASS", "IMPASSABLE", "IMPENETRABLE"]} ,
          {"id" : 51, "name" : "WALL_GRASS_T_CORNER_T1",              "texture" : "wall_grass_t_corner_t1.png", "tags" :["WALL", "GRASS", "IMPASSABLE", "IMPENETRABLE"]} ,
          {"id" : 52, "name" : "WALL_GRASS_T_CORNER_L1",              "texture" : "wall_grass_t_corner_l1.png", "tags" :["WALL", "GRASS", "IMPASSABLE", "IMPENETRABLE"]},
+
          {"id" : 53, "name" : "WATER_LEAVES2",    "texture" : "waterLeaves2.png",  "tags" :["WATER", "DECOR", "IMPASSABLE"]},
          {"id" : 54, "name" : "WATER_LEAVES3",    "texture" : "waterLeaves3.png",  "tags" :["WATER", "DECOR", "IMPASSABLE"]},
          {"id" : 55, "name" : "WATER_LEAVES4",    "texture" : "waterLeaves4.png",  "tags" :["WATER", "DECOR", "IMPASSABLE"]},
@@ -81,7 +82,8 @@
 
          {"id" : 68, "name" : "ITEM_SPAWN_MEDKIT_GRASS1",              "texture" : "item_spawn_medkit_grass1.png", "tags" :["ITEM_SPAWN", "GRASS", "MEDKIT"]},
          {"id" : 69, "name" : "ITEM_SPAWN_SVD_GRASS1",              "texture" : "item_spawn_svd_grass1.png", "tags" :["ITEM_SPAWN", "GRASS", "SVD"]},
-         {"id" : 70, "name" : "MEDKIT1",              "texture" : "item_spawn_medkit_grass1.png", "tags" :["ITEM", "MEDKIT"]}
+         {"id" : 70, "name" : "MEDKIT1",              "texture" : "item_spawn_medkit_grass1.png", "tags" :["ITEM", "MEDKIT"]},
+         {"id" : 71, "name" : "ROCK1",              "texture" : "rock1.png", "tags" :["ROCK", "COMMON","GRASS", "IMPASSABLE", "IMPENETRABLE"]}
      ]
     }
 
