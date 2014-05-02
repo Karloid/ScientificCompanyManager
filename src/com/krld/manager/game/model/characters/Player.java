@@ -1,7 +1,7 @@
 package com.krld.manager.game.model.characters;
 
 import com.krld.manager.game.Game;
-import com.krld.manager.game.Svd;
+import com.krld.manager.game.model.items.Svd;
 import com.krld.manager.game.Utils;
 import com.krld.manager.game.model.Point;
 import com.krld.manager.game.model.items.*;
@@ -34,7 +34,7 @@ public class Player extends ActiveUnit {
         setSpeed(SPEED * game.getSpeedRatio());
         randomizeSpriteType();
         lastTimeShot = System.currentTimeMillis();
-        guns = new ArrayList<Gun>();
+        guns = new ArrayList<>();
         guns.add(new PistolGun());
         guns.add(new Ak47());
         guns.add(new Svd());
@@ -62,7 +62,7 @@ public class Player extends ActiveUnit {
                     }
                 }
                 if (itemsContainersToRemove == null) {
-                    itemsContainersToRemove = new ArrayList<ItemContainer>();
+                    itemsContainersToRemove = new ArrayList<>();
                 }
                 itemsContainersToRemove.add(itemContainer);
             }
@@ -219,20 +219,8 @@ public class Player extends ActiveUnit {
     }
 
     public static class Comparators {
-        public static Comparator<Player> NAME = new Comparator<Player>() {
+        public static Comparator<Player> NAME = (o1, o2) -> o1.getName().compareTo(o2.getName());
 
-            @Override
-            public int compare(Player o1, Player o2) {
-                return o1.getName().compareTo(o2.getName());
-            }
-        };
-
-        public static Comparator<Player> KILL = new Comparator<Player>() {
-
-            @Override
-            public int compare(Player o1, Player o2) {
-                return (o1.getKillCount() == o2.getKillCount() ? 0 : (o1.getKillCount() < o2.getKillCount() ? 1 : -1 ));
-            }
-        };
+        public static Comparator<Player> KILL = (o1, o2) -> (o1.getKillCount() == o2.getKillCount() ? 0 : (o1.getKillCount() < o2.getKillCount() ? 1 : -1 ));
     }
 }

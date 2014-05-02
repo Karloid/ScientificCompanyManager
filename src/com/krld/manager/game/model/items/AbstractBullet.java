@@ -13,7 +13,7 @@ public abstract class AbstractBullet extends Unit {
     private final int targetX;
     private final int targetY;
     private final Player owner;
-    private static final Double DEAD_DISTANCE = Double.valueOf(SPEED);
+    private static final Double DEAD_DISTANCE = (double) SPEED;
     private double speed;
     private double angle;
     private boolean dead;

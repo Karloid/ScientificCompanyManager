@@ -17,6 +17,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Andrey on 2/15/14.
@@ -33,7 +34,7 @@ public class GameStateServlet extends HttpServlet {
         List<Player> players = game.getPlayers();
         Gson gson = new Gson();
         PrintWriter writer = resp.getWriter();
-        List<Object> playersList = new ArrayList<Object>();
+        List<Object> playersList = new ArrayList<>();
         for (Player player : players) {
             HashMap<String, Object> playerMap = new HashMap<>();
             playerMap.put("id", player.getId());
@@ -47,7 +48,7 @@ public class GameStateServlet extends HttpServlet {
             playersList.add(playerMap);
         }
 
-        List<Object> bulletsList = new ArrayList<Object>();
+        List<Object> bulletsList = new ArrayList<>();
         for (AbstractBullet bullet : game.getBullets()) {
             HashMap<String, Object> bulletMap = new HashMap<>();
             bulletMap.put("id", bullet.getId());
@@ -66,10 +67,7 @@ public class GameStateServlet extends HttpServlet {
             itemsContainerList.add(itemsContainersMap);
         }
 
-        List<String> playerGunsList = new ArrayList<String>();
-        for (Gun gun : currentPlayer.getGuns()) {
-            playerGunsList.add(gun.getName());
-        }
+        List<String> playerGunsList = currentPlayer.getGuns().stream().map(Gun::getName).collect(Collectors.toList());
         writer.println(" {  \"players\" : " + gson.toJson(playersList) +
                 ", \"bullets\" :" + gson.toJson(bulletsList) +
                 ", \"itemsContainers\" :" + gson.toJson(itemsContainerList) +

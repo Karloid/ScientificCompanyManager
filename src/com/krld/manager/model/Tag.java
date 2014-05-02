@@ -16,7 +16,7 @@ public class Tag {
     private String name;
 
     @ManyToMany(mappedBy = "tags")
-    private Set<com.krld.manager.model.Message> messages = new HashSet<com.krld.manager.model.Message>();
+    private Set<com.krld.manager.model.Message> messages = new HashSet<>();
 
     public void setId(long id) {
         this.id = id;

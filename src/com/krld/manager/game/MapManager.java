@@ -3,6 +3,7 @@ package com.krld.manager.game;
 import com.google.gson.Gson;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -68,19 +69,17 @@ public class MapManager {
     }
 
     private void loadTiles() {
-        tileTypes = new ArrayList<TileType>();
+        tileTypes = new ArrayList<>();
         String jsonString = Utils.readFile("tileTypes.json");
         Map root = new Gson().fromJson(jsonString, Map.class);
         List<Map<String, Object>> tiles = (List<Map<String, Object>>) root.get("tiles");
-        for (Map<String, Object> tile : tiles) {
-            tileTypes.add(new TileType((int) Math.round((Double) tile.get("id")),
-                    (String) tile.get("name"), (String) tile.get("texture"), (Collection<String>) tile.get("tags")));
-        }
+        tileTypes.addAll(tiles.stream().map(tile -> new TileType((int) Math.round((Double) tile.get("id")),
+                (String) tile.get("name"), (String) tile.get("texture"), (Collection<String>) tile.get("tags"))).collect(Collectors.toList()));
         // System.out.println("tile types: " + tileTypes);
 
     }
 
-
+    @Deprecated
     public void addDirtBlock(int x, int y, int[][] tiles) {
         tiles[x][y] = getTileTypeByName("GRASS_TO_DIRT_CORNER_LT1").getId();
         tiles[x + 1][y] = getTileTypeByName("GRASS_TO_DIRT_HOR1").getId();

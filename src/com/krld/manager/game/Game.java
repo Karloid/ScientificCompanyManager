@@ -24,7 +24,7 @@ public class Game {
     private int[][] penetrable;
     private List<Player> players;
     private List<AbstractBullet> bullets;
-    private long delay = 70;
+    private long delay = 100;
     private double speedRatio = delay / 300f;
     private List<Spawn> spawns;
     private MapManager mapManager;
@@ -37,18 +37,15 @@ public class Game {
     }
 
     public Game() {
-        players = new ArrayList<Player>();
-        bullets = new ArrayList<AbstractBullet>();
-        itemsContainers = new ArrayList<ItemContainer>();
+        players = new ArrayList<>();
+        bullets = new ArrayList<>();
+        itemsContainers = new ArrayList<>();
 
         initTiles();
 
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                runGameLoop();
-            }
+        new Thread(() -> {
+            runGameLoop();
         }).start();
 
     }
@@ -73,13 +70,11 @@ public class Game {
     }
 
     private void respawnDeadPlayers() {
-        for (Player player : players) {
-            if (!player.isAlive()) {
-                spawnPlayer(player);
-                player.setHp(Unit.MAX_HP);
-                player.increaseDeathCount();
-            }
-        }
+        players.stream().filter(player -> !player.isAlive()).forEach(player -> {
+            spawnPlayer(player);
+            player.setHp(Unit.MAX_HP);
+            player.increaseDeathCount();
+        });
     }
 
     private void updateBullets() {
@@ -88,7 +83,7 @@ public class Game {
             bullet.update();
             if (bullet.isDead()) {
                 if (bulletsToRemove == null) {
-                    bulletsToRemove = new ArrayList<AbstractBullet>();
+                    bulletsToRemove = new ArrayList<>();
                 }
                 bulletsToRemove.add(bullet);
             }
@@ -252,7 +247,7 @@ public class Game {
         }
 
         private void initItemSpawn() {
-            itemSpawns = new ArrayList<ItemSpawn>();
+            itemSpawns = new ArrayList<>();
 
             for (int x = 0; x < WIDTH; x++) {
                 for (int y = 0; y < HEIGHT; y++) {
@@ -317,7 +312,7 @@ public class Game {
         }
 
         private void initSpawns() {
-            spawns = new ArrayList<Spawn>();
+            spawns = new ArrayList<>();
 
             for (int x = 0; x < WIDTH; x++) {
                 for (int y = 0; y < HEIGHT; y++) {

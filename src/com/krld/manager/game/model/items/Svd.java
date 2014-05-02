@@ -1,4 +1,4 @@
-package com.krld.manager.game;
+package com.krld.manager.game.model.items;
 
 import com.krld.manager.game.model.items.Gun;
 import com.krld.manager.game.model.items.MyItem;

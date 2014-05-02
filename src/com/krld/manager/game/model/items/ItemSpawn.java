@@ -22,9 +22,7 @@ public class ItemSpawn extends Unit {
         try {
             getContext().addNewItemContainer(new ItemContainer(getContext(), itemToSpawn.getItem().getClass().newInstance(),
                     itemToSpawn.getSpriteId(), getPosition().getX(), getPosition().getY()));
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
     }

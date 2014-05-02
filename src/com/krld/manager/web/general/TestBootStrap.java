@@ -14,7 +14,7 @@ import java.util.List;
 public class TestBootStrap extends HttpServlet{
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<String> listNames = new ArrayList<String>();
+        List<String> listNames = new ArrayList<>();
         listNames.add("Вася");
         listNames.add("Ваня");
         listNames.add("Диман");

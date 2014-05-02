@@ -21,7 +21,7 @@ public class Message {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "msg_tags", joinColumns = @JoinColumn(name = "msg_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    private Set<Tag> tags = new HashSet<Tag>();
+    private Set<Tag> tags = new HashSet<>();
 
     public Message() {
     }
