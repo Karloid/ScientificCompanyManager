@@ -25,7 +25,7 @@ public class WebServer {
     }
 
     private static void startServer() {
-        Server server = new Server(80);
+        Server server = new Server(8080);
         URL warUrl = TestBootStrap.class.getClassLoader().getResource("");
         String warUrlString = warUrl.toExternalForm() + "com/krld/manager/web/view";
         WebAppContext webapp = new WebAppContext(warUrlString, "/");
